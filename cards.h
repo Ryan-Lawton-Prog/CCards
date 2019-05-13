@@ -6,14 +6,14 @@
 #include <stdlib.h> /*fprintf, fscanf, sscanf*/
 
 #define MAX_CARD_QUESTION_LENGTH 20
-#define MAX_CARD_DESCRIPTION_LENGTH 100
+#define MAX_CARD_ANSWER_LENGTH 100
 
 struct card{
   char question[MAX_CARD_QUESTION_LENGTH+1];
-  char description[MAX_CARD_DESCRIPTION_LENGTH+1];
+  char answer[MAX_CARD_ANSWER_LENGTH+1];
   struct card * next;
 };
-typedef struct card card_t;
+typedef struct card *card_t;
 
 struct deck{
   card_t top_of_deck;
@@ -21,12 +21,15 @@ struct deck{
 };
 typedef struct deck deck_t;
 
-extern card_t*card_head(const char[], const char[]);
-extern card_t*card_next(const char[], const char[], card_t*);
-extern void get_question(card_t*, char[]);
-extern void get_description(card_t*, char[]);
-extern void set_data(const char[], const char[], card_t*);
-extern card_t*get_next(card_t*);
-extern int get_size(card_t*);
+card_t create_card();
+card_t add_card(card_t, const char[], const char[]);
+void get_question(card_t, char[]);
+void get_answer(card_t, char[]);
+void set_data(card_t, const char[], const char[]);
+void get_question_i(card_t, int, char[]);
+void get_answer_i(card_t, int, char[]);
+void set_data_i(card_t, int, const char[], const char[]);
+card_t get_next(card_t);
+int get_size(card_t);
 
 #endif
