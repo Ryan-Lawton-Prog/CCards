@@ -13,13 +13,7 @@ struct card{
   char answer[MAX_CARD_ANSWER_LENGTH+1];
   struct card * next;
 };
-typedef struct card *card_t;
-
-struct deck{
-  card_t top_of_deck;
-  struct deck * next;
-};
-typedef struct deck deck_t;
+typedef struct card * card_t;
 
 card_t create_card();
 card_t add_card(card_t, const char[], const char[]);
