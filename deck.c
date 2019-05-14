@@ -27,11 +27,11 @@ deck_t add_deck(deck_t head, const char name[], card_t cards){
   return head;
 }
 
-void get_deck_name(deck_t n, char name[]){
+void get_name(deck_t n, char name[]){
   strcpy(name, n->name);
 }
 
-card_t get_deck_cards(deck_t n){
+card_t get_cards(deck_t n){
   return n->cards;
 }
 
@@ -40,7 +40,7 @@ void set_deck_data(deck_t n, const char name[], card_t cards){
   n->cards = cards;
 }
 
-void get_deck_name_i(deck_t n, int pos, char name[]){
+void get_name_i(deck_t n, int pos, char name[]){
   deck_t temp;
   temp = n;
   int i;
@@ -54,7 +54,7 @@ void get_deck_name_i(deck_t n, int pos, char name[]){
   strcpy(name, "invalid index");
 }
 
-card_t get_deck_cards(deck_t n, int pos){
+card_t get_cards(deck_t n, int pos){
   card_t temp;
   temp = n;
   int i;

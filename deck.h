@@ -14,11 +14,11 @@ typedef struct deck * deck_t;
 
 deck_t create_deck();
 deck_t add_deck(deck_t, const char[], card_t);
-void get_deck_name(deck_t, char[]);
-card_t get_deck_cards(deck_t);
+void get_name(deck_t, char[]);
+card_t get_cards(deck_t);
 void set_deck_data(deck_t, const char[], card_t);
-void get_deck_name_i(deck_t, int, char[]);
-card_t get_deck_cards_i(deck_t, int);
+void get_name_i(deck_t, int, char[]);
+card_t get_cards_i(deck_t, int);
 void set_deck_data_i(deck_t, int, const char[], card_t);
 deck_t get_next_deck(deck_t);
 int get_deck_size(deck_t);
