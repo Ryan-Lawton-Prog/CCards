@@ -15,7 +15,6 @@ card_t add_card(card_t head, const char question[], const char answer[]){
   strcpy(temp->question,question);
   strcpy(temp->answer,answer);
   if(!strcmp(head->question, "")){
-    printf("test");
     head = temp; 
   }
   else{
@@ -81,8 +80,6 @@ void set_data_i(card_t n, int pos, const char question[], const char answer[]){
     }
     temp = temp->next;
   }
-  strcpy(temp->question, "invalid index");
-  strcpy(temp->answer, "invalid index");
 }
 
 card_t get_next(card_t n){
