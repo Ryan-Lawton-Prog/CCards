@@ -13,6 +13,9 @@
 #include "deck.h"
 #include "menu.h"
 
+#define MAX_USERNAME_LENGTH 20
+#define MAX_PASSWORD_LENGTH 20
+
 /*******************************************************************************
  * Function prototypes
 *******************************************************************************/
@@ -26,6 +29,8 @@ void view_user_stats();
  * Main
 *******************************************************************************/
 int main(){
+  char username[MAX_USERNAME_LENGTH];
+  char password[MAX_PASSWORD_LENGTH];
   int menu = 0;
   int logged_in = 1; /*once loggin has been implemented set to 0*/
   while(menu != -1){
@@ -56,8 +61,6 @@ int main(){
           break;
       }
     }else{
-      char username[20];
-      char password[20];
       print_login();
       scanf("%s",username);
       scanf("%s",password);
