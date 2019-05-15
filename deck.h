@@ -12,6 +12,7 @@
 struct deck{
   char name[MAX_DECK_NAME_LENGTH];
   card_t cards;
+  /* add stat information */
   struct deck * next;
 };
 typedef struct deck * deck_t;
