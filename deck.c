@@ -54,14 +54,13 @@ void get_name_i(deck_t n, int pos, char name[]){
   strcpy(name, "invalid index");
 }
 
-card_t get_cards(deck_t n, int pos){
-  card_t temp;
+card_t get_cards_i(deck_t n, int pos){
+  deck_t temp;
   temp = n;
   int i;
-  for(i = 0; i < get_size(n); i++){
+  for(i = 0; i < get_deck_size(n); i++){
     if(i == pos){
       return n->cards;
-      return;
     }
     temp = temp->next;
   }
