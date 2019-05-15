@@ -4,6 +4,7 @@
 #include <stdio.h>  /*scanf, printf, fopen*/
 #include <string.h> /*strcmp, strcpy, strlen*/
 #include <stdlib.h> /*fprintf, fscanf, sscanf*/
+#include <math.h>
 
 #define MAX_CARD_QUESTION_LENGTH 20
 #define MAX_CARD_ANSWER_LENGTH 100
