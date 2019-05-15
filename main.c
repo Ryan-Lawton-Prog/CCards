@@ -35,6 +35,7 @@ int main(){
   char password[MAX_PASSWORD_LENGTH];
   int menu = 0;
   int logged_in = 1; /*once loggin has been implemented set to 0*/
+  deck_t decks = create_deck();
   while(menu != -1){
     if(logged_in){
       print_menu();
@@ -43,7 +44,6 @@ int main(){
        *  1: View Decks
        *  2: Create Deck
        *  4: View Community Decks
-       *  5: View User Stats
       */
       switch(menu){
         case -1:
