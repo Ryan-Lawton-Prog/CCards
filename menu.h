@@ -7,5 +7,6 @@
  * Function prototypes
 *******************************************************************************/
 void print_menu();
+void print_login();
 
 #endif
