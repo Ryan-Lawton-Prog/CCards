@@ -8,6 +8,9 @@
 #define MAX_CARD_QUESTION_LENGTH 20
 #define MAX_CARD_ANSWER_LENGTH 100
 
+/*******************************************************************************
+ * card struct - used as a linked list for storing a list of cards for a deck
+*******************************************************************************/
 struct card{
   char question[MAX_CARD_QUESTION_LENGTH+1];
   char answer[MAX_CARD_ANSWER_LENGTH+1];
@@ -15,6 +18,10 @@ struct card{
 };
 typedef struct card * card_t;
 
+
+/*******************************************************************************
+ * Function prototypes
+*******************************************************************************/
 card_t create_card();
 card_t add_card(card_t, const char[], const char[]);
 void get_question(card_t, char[]);

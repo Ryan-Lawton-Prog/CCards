@@ -5,6 +5,10 @@
 
 #define MAX_DECK_NAME_LENGTH 50
 
+/*******************************************************************************
+ * deck struct - used as a linked list for storing each deck without having
+ * to set re-adjust the size of a deck array or setting a maximum
+*******************************************************************************/
 struct deck{
   char name[MAX_DECK_NAME_LENGTH];
   card_t cards;
@@ -12,6 +16,10 @@ struct deck{
 };
 typedef struct deck * deck_t;
 
+
+/*******************************************************************************
+ * Function prototypes
+*******************************************************************************/
 deck_t create_deck();
 deck_t add_deck(deck_t, const char[], card_t);
 void get_name(deck_t, char[]);
