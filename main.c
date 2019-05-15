@@ -24,6 +24,7 @@ void view_decks();
 void create_a_deck();
 void view_community_decks();
 void view_user_stats();
+void login(char[], char[]);
 
 /*******************************************************************************
  * Main
@@ -61,12 +62,16 @@ int main(){
           break;
       }
     }else{
-      print_login();
-      scanf("%s",username);
-      scanf("%s",password);
+      login(username, password);
     }
     /* prints menu and gets menu type */
   }
   return 0;
+}
+
+void login(char username[], char password[]){
+  print_login();
+  scanf("%s",username);
+  scanf("%s",password);
 }
 
