@@ -26,10 +26,10 @@ card_t create_card();
 card_t add_card(card_t, const char[], const char[]);
 void get_question(card_t, char[]);
 void get_answer(card_t, char[]);
-void set_data(card_t, const char[], const char[]);
-void get_question_i(card_t, int, char[]);
-void get_answer_i(card_t, int, char[]);
-void set_data_i(card_t, int, const char[], const char[]);
+void set_card(card_t, const char[], const char[]);
+void get_question_at(card_t, int, char[]);
+void get_answer_at(card_t, int, char[]);
+void set_card_at(card_t, int, const char[], const char[]);
 card_t get_next(card_t);
 int get_size(card_t);
 
