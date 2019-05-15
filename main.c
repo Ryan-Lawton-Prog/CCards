@@ -1,6 +1,6 @@
 /*******************************************************************************
  * 48430 Fundamentals of C Programming - Assignment 3
- * Team: ?
+ * Team: 3
  * Team Members: 
  *  Anto Mathews - 
  *  Ayush Bhatia - 
@@ -12,6 +12,7 @@
 
 #include "deck.h"
 #include "menu.h"
+#include "test.h"
 
 #define MAX_USERNAME_LENGTH 20
 #define MAX_PASSWORD_LENGTH 20
@@ -48,6 +49,7 @@ int main(){
         case -1:
           break;
         case 1:
+          test_add_card();
           break;
         case 2:
           break;

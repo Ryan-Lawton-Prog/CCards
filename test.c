@@ -1,4 +1,4 @@
-#include "deck.h"
+#include "test.h"
 
 void test_add_card(){
   card_t top = add_card(create_card(), "What is 1 + 1", "2");
@@ -9,7 +9,7 @@ void test_add_card(){
   char question[MAX_CARD_QUESTION_LENGTH];
   char answer[MAX_CARD_ANSWER_LENGTH];
   for(i = 0; i < get_size(top); i++){
-    get_question(temp, question);
+    get_question_at(top, i, question);
     get_answer(temp, answer);
     printf("%s : %s\n", question, answer);
     temp = temp->next;
