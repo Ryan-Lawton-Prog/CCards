@@ -26,14 +26,12 @@ void view_decks();
 void create_a_deck();
 void view_community_decks();
 void view_user_stats();
-void login(char[], char[]);
+void login(deck_t*, deck_t*, user_t*);
 
 /*******************************************************************************
  * Main
 *******************************************************************************/
 int main(){
-  char username[MAX_USERNAME_LENGTH];
-  char password[MAX_PASSWORD_LENGTH];
   int menu = 0;
   int logged_in = 1; /*once loggin has been implemented set to 0*/
   deck_t decks = create_deck();
@@ -67,16 +65,14 @@ int main(){
           break;
       }
     }else{
-      login(username, password);
+      login(&decks, &community_decks, &user);
     }
     /* prints menu and gets menu type */
   }
   return 0;
 }
 
-void login(char username[], char password[]){
+void login(deck_t*deck, deck_t*community_deck, user_t*user){
   print_login();
-  scanf("%s",username);
-  scanf("%s",password);
 }
 

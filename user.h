@@ -23,11 +23,10 @@ typedef struct user user_t;
 user_t create_user();
 user_t update_user(user_t, const char[], const char[], const char[]);
 void get_fullname(user_t, char[]);
-int check_username(user_t, const char[]);
-int check_password(user_t, const char[]);
+int check_username(user_t);
+int check_password(user_t);
 user_t set_fullname(user_t, const char[]);
 user_t set_username(user_t, const char[]);
 user_t set_password(user_t, const char[]);
-user_t set_user(user_t, const char[], const char[], const char[]);
 
 #endif
