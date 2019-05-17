@@ -12,6 +12,7 @@
 
 #include "deck.h"
 #include "menu.h"
+#include "user.h"
 #include "test.h"
 
 #define MAX_USERNAME_LENGTH 20
@@ -36,6 +37,8 @@ int main(){
   int menu = 0;
   int logged_in = 1; /*once loggin has been implemented set to 0*/
   deck_t decks = create_deck();
+  deck_t community_decks = create_deck();
+  user_t user = create_user();
   while(menu != -1){
     if(logged_in){
       print_menu();
