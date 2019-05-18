@@ -10,7 +10,7 @@
  * to set re-adjust the size of a deck array or setting a maximum
 *******************************************************************************/
 struct deck{
-  char name[MAX_DECK_NAME_LENGTH];
+  char name[MAX_DECK_NAME_LENGTH+1];
   card_t cards;
   /* add stat information */
   struct deck * next;
