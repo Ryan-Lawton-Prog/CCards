@@ -22,7 +22,8 @@ user_t create_user(){
  * outputs:
  * - user_t
 *******************************************************************************/
-user_t update_user(user_t user, const char fullname[], const char username[], const char password[]){
+user_t update_user(user_t user, const char fullname[], 
+        const char username[], const char password[]){
     strcpy(user.fullname, fullname);
     strcpy(user.username, username);
     strcpy(user.password, password);

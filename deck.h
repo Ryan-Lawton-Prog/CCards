@@ -12,13 +12,13 @@
  * to set re-adjust the size of a deck array or setting a maximum
 *******************************************************************************/
 struct deck{
-  card_t cards;
-  char name[MAX_DECK_NAME_LENGTH+1];
-  char author[MAX_AUTHOR_LENGTH+1];
-  char owner[MAX_OWNER_NAME_LENGTH+1];
-  int played;
-  double accuracy;
-  struct deck * next;
+    card_t cards;
+    char name[MAX_DECK_NAME_LENGTH+1];
+    char author[MAX_AUTHOR_LENGTH+1];
+    char owner[MAX_OWNER_NAME_LENGTH+1];
+    int played;
+    double accuracy;
+    struct deck * next;
 };
 typedef struct deck * deck_t;
 
@@ -27,7 +27,8 @@ typedef struct deck * deck_t;
  * Function prototypes
 *******************************************************************************/
 deck_t create_deck();
-deck_t add_deck(deck_t, const char[], const char[], const char[], int, double, card_t);
+deck_t add_deck(deck_t, const char[], const char[], 
+    const char[], int, double, card_t);
 void get_name(deck_t, char[]);
 void get_name_at(deck_t, int, char[]);
 card_t get_cards(deck_t);

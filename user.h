@@ -11,9 +11,9 @@
  * to set re-adjust the size of a deck array or setting a maximum
 *******************************************************************************/
 struct user{
-  char fullname[MAX_NAME_LENGTH+1];
-  char username[MAX_NAME_LENGTH+1];
-  char password[MAX_NAME_LENGTH+1];
+    char fullname[MAX_NAME_LENGTH+1];
+    char username[MAX_NAME_LENGTH+1];
+    char password[MAX_NAME_LENGTH+1];
 };
 typedef struct user user_t;
 

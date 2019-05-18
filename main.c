@@ -32,47 +32,47 @@ void login(deck_t*, deck_t*, user_t*);
  * Main
 *******************************************************************************/
 int main(){
-  int menu = 0;
-  int logged_in = 1; /*once loggin has been implemented set to 0*/
-  deck_t decks = create_deck();
-  deck_t community_decks = create_deck();
-  user_t user = create_user();
-  while(menu != -1){
-    if(logged_in){
-      print_menu();
-      scanf("%d",&menu);
-      /* -1: Exit
-       *  1: View Decks
-       *  2: Create Deck
-       *  4: View Community Decks
-      */
-      switch(menu){
-        case -1:
-          break;
-        case 1:
-          test_add_card();
-          break;
-        case 2:
-          break;
-        case 3:
-          break;
-        case 4:
-          break;
-        case 5:
-          break;
-        default:
-          printf("Invalid choice\n");
-          break;
-      }
-    }else{
-      login(&decks, &community_decks, &user);
+    int menu = 0;
+    int logged_in = 1; /*once loggin has been implemented set to 0*/
+    deck_t decks = create_deck();
+    deck_t community_decks = create_deck();
+    user_t user = create_user();
+    while(menu != -1){
+        if(logged_in){
+            print_menu();
+            scanf("%d",&menu);
+            /* -1: Exit
+             *  1: View Decks
+             *  2: Create Deck
+             *  4: View Community Decks
+             */
+            switch(menu){
+                case -1:
+                    break;
+                case 1:
+                    test_add_card();
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                default:
+                    printf("Invalid choice\n");
+                    break;
+            }
+        }else{
+            login(&decks, &community_decks, &user);
+        }
+        /* prints menu and gets menu type */
     }
-    /* prints menu and gets menu type */
-  }
-  return 0;
+    return 0;
 }
 
 void login(deck_t*deck, deck_t*community_deck, user_t*user){
-  print_login();
+    print_login();
 }
 

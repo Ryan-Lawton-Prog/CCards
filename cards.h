@@ -13,10 +13,9 @@
  * card struct - used as a linked list for storing a list of cards for a deck
 *******************************************************************************/
 struct card{
-  char question[MAX_CARD_QUESTION_LENGTH+1];
-  char answer[MAX_CARD_ANSWER_LENGTH+1];
-  /* add stat information */
-  struct card * next;
+    char question[MAX_CARD_QUESTION_LENGTH+1];
+    char answer[MAX_CARD_ANSWER_LENGTH+1];
+    struct card * next;
 };
 typedef struct card * card_t;
 

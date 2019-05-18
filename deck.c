@@ -8,16 +8,16 @@
  * - deck_t
 *******************************************************************************/
 deck_t create_deck(){
-  deck_t temp; 
-  temp = (deck_t)malloc(sizeof(struct deck));
-  strcpy(temp->name, "");
-  strcpy(temp->author, "");
-  strcpy(temp->owner, "");
-  temp->played = 0;
-  temp->accuracy = 0;
-  temp->cards = NULL;
-  temp->next = NULL;
-  return temp;
+    deck_t temp; 
+    temp = (deck_t)malloc(sizeof(struct deck));
+    strcpy(temp->name, "");
+    strcpy(temp->author, "");
+    strcpy(temp->owner, "");
+    temp->played = 0;
+    temp->accuracy = 0;
+    temp->cards = NULL;
+    temp->next = NULL;
+    return temp;
 }
 
 /*******************************************************************************
@@ -27,26 +27,32 @@ deck_t create_deck(){
  * outputs:
  * - deck_t (Top of deck heap)
 *******************************************************************************/
-deck_t add_deck(deck_t head, const char name[], const char author[], const char owner[], int played, double accuracy, card_t cards){
-  deck_t temp,p;
-  temp = create_deck();
-  strcpy(temp->name,name);
-  strcpy(temp->author,author);
-  strcpy(temp->owner,owner);
-  temp->played = played;
-  temp->accuracy = accuracy;
-  temp->cards = cards;
-  if(!strcmp(head->name, "")){
-    head = temp; 
-  }
-  else{
-    p  = head;
-    while(p->next != NULL){
-      p = p->next;
+deck_t add_deck(deck_t head, 
+        const char name[], 
+        const char author[], 
+        const char owner[], 
+        int played, 
+        double accuracy, 
+        card_t cards){
+    deck_t temp,p;
+    temp = create_deck();
+    strcpy(temp->name,name);
+    strcpy(temp->author,author);
+    strcpy(temp->owner,owner);
+    temp->played = played;
+    temp->accuracy = accuracy;
+    temp->cards = cards;
+    if(!strcmp(head->name, "")){
+        head = temp; 
     }
-      p->next = temp;
-  }
-  return head;
+    else{
+        p  = head;
+        while(p->next != NULL){
+            p = p->next;
+        }
+        p->next = temp;
+    }
+    return head;
 }
 
 /*******************************************************************************
@@ -57,7 +63,7 @@ deck_t add_deck(deck_t head, const char name[], const char author[], const char 
  * - none
 *******************************************************************************/
 void get_name(deck_t n, char name[]){
-  strcpy(name, n->name);
+    strcpy(name, n->name);
 }
 
 /*******************************************************************************
@@ -69,17 +75,17 @@ void get_name(deck_t n, char name[]){
  * - none
 *******************************************************************************/
 void get_name_at(deck_t n, int pos, char name[]){
-  deck_t temp;
-  temp = n;
-  int i;
-  for(i = 0; i < get_deck_size(n); i++){
-    if(i == pos){
-      strcpy(name, temp->name);
-      return;
+    deck_t temp;
+    temp = n;
+    int i;
+    for(i = 0; i < get_deck_size(n); i++){
+        if(i == pos){
+            strcpy(name, temp->name);
+            return;
+        }
+        temp = temp->next;
     }
-    temp = temp->next;
-  }
-  strcpy(name, "invalid index");
+    strcpy(name, "invalid index");
 }
 
 /*******************************************************************************
@@ -90,7 +96,7 @@ void get_name_at(deck_t n, int pos, char name[]){
  * - card_t
 *******************************************************************************/
 card_t get_cards(deck_t n){
-  return n->cards;
+    return n->cards;
 }
 
 /*******************************************************************************
@@ -102,16 +108,16 @@ card_t get_cards(deck_t n){
  * - card_t (top of heap)
 *******************************************************************************/
 card_t get_cards_at(deck_t n, int pos){
-  deck_t temp;
-  temp = n;
-  int i;
-  for(i = 0; i < get_deck_size(n); i++){
-    if(i == pos){
-      return temp->cards;
+    deck_t temp;
+    temp = n;
+    int i;
+    for(i = 0; i < get_deck_size(n); i++){
+        if(i == pos){
+            return temp->cards;
+        }
+        temp = temp->next;
     }
-    temp = temp->next;
-  }
-  return NULL;
+    return NULL;
 }
 
 /*******************************************************************************
@@ -122,8 +128,8 @@ card_t get_cards_at(deck_t n, int pos){
  * - none
 *******************************************************************************/
 void set_deck(deck_t n, const char name[], card_t cards){
-  strcpy(n->name, name);
-  n->cards = cards;
+    strcpy(n->name, name);
+    n->cards = cards;
 }
 
 /*******************************************************************************
@@ -135,17 +141,17 @@ void set_deck(deck_t n, const char name[], card_t cards){
  * - none
 *******************************************************************************/
 void set_deck_at(deck_t n, int pos, const char name[], card_t cards){
-  deck_t temp;
-  temp = n;
-  int i;
-  for(i = 0; i < get_deck_size(n); i++){
-    if(i == pos){
-      strcpy(temp->name, name);
-      temp->cards = cards;
-      return;
+    deck_t temp;
+    temp = n;
+    int i;
+    for(i = 0; i < get_deck_size(n); i++){
+        if(i == pos){
+            strcpy(temp->name, name);
+            temp->cards = cards;
+            return;
+        }
+        temp = temp->next;
     }
-    temp = temp->next;
-  }
 }
 
 /*******************************************************************************
@@ -156,7 +162,7 @@ void set_deck_at(deck_t n, int pos, const char name[], card_t cards){
  * - int
 *******************************************************************************/
 int get_played(deck_t n){
-  return n->played;
+    return n->played;
 }
 
 /*******************************************************************************
@@ -168,16 +174,16 @@ int get_played(deck_t n){
  * - int
 *******************************************************************************/
 int get_times_played_at(deck_t n, int pos){
-  deck_t temp;
-  temp = n;
-  int i;
-  for(i = 0; i < get_deck_size(n); i++){
-    if(i == pos){
-      return temp->played;
+    deck_t temp;
+    temp = n;
+    int i;
+    for(i = 0; i < get_deck_size(n); i++){
+        if(i == pos){
+            return temp->played;
+        }
+        temp = temp->next;
     }
-    temp = temp->next;
-  }
-  return -1;
+    return -1;
 }
 
 /*******************************************************************************
@@ -188,7 +194,7 @@ int get_times_played_at(deck_t n, int pos){
  * - double
 *******************************************************************************/
 double get_accuracy(deck_t n){
-  return n->accuracy;
+    return n->accuracy;
 }
 
 /*******************************************************************************
@@ -200,16 +206,16 @@ double get_accuracy(deck_t n){
  * - double
 *******************************************************************************/
 double get_accuracy_at(deck_t n, int pos){
-  deck_t temp;
-  temp = n;
-  int i;
-  for(i = 0; i < get_deck_size(n); i++){
-    if(i == pos){
-      return temp->accuracy;
+    deck_t temp;
+    temp = n;
+    int i;
+    for(i = 0; i < get_deck_size(n); i++){
+        if(i == pos){
+            return temp->accuracy;
+        }
+        temp = temp->next;
     }
-    temp = temp->next;
-  }
-  return -1;
+    return -1;
 }
 
 /*******************************************************************************
@@ -220,7 +226,7 @@ double get_accuracy_at(deck_t n, int pos){
  * - none
 *******************************************************************************/
 void get_author(deck_t n, char author[]){
-  strcpy(author, n->author);
+    strcpy(author, n->author);
 }
 
 /*******************************************************************************
@@ -232,17 +238,17 @@ void get_author(deck_t n, char author[]){
  * - none
 *******************************************************************************/
 void get_author_at(deck_t n, int pos, char author[]){
-  deck_t temp;
-  temp = n;
-  int i;
-  for(i = 0; i < get_deck_size(n); i++){
-    if(i == pos){
-      strcpy(author, temp->author);
-      return;
+    deck_t temp;
+    temp = n;
+    int i;
+    for(i = 0; i < get_deck_size(n); i++){
+        if(i == pos){
+            strcpy(author, temp->author);
+            return;
+        }
+        temp = temp->next;
     }
-    temp = temp->next;
-  }
-  strcpy(author, "invalid index");
+    strcpy(author, "invalid index");
 }
 
 /*******************************************************************************
@@ -253,7 +259,7 @@ void get_author_at(deck_t n, int pos, char author[]){
  * - none
 *******************************************************************************/
 void get_owner(deck_t n, char owner[]){
-  strcpy(owner, n->owner);
+    strcpy(owner, n->owner);
 }
 
 /*******************************************************************************
@@ -265,17 +271,17 @@ void get_owner(deck_t n, char owner[]){
  * - none
 *******************************************************************************/
 void get_owner_at(deck_t n, int pos, char owner[]){
-  deck_t temp;
-  temp = n;
-  int i;
-  for(i = 0; i < get_deck_size(n); i++){
-    if(i == pos){
-      strcpy(owner, temp->owner);
-      return;
+    deck_t temp;
+    temp = n;
+    int i;
+    for(i = 0; i < get_deck_size(n); i++){
+        if(i == pos){
+            strcpy(owner, temp->owner);
+            return;
+        }
+        temp = temp->next;
     }
-    temp = temp->next;
-  }
-  strcpy(owner, "invalid index");
+    strcpy(owner, "invalid index");
 }
 
 /*******************************************************************************
@@ -286,10 +292,10 @@ void get_owner_at(deck_t n, int pos, char owner[]){
  * - none
 *******************************************************************************/
 void update_stats(deck_t n, int correct){
-  n->accuracy = ((n->accuracy * n->played) + 
-    (correct / get_size(n->cards))) / 
-    (n->played + 1);
-  n->played++;
+    n->accuracy = ((n->accuracy * n->played) + 
+        (correct / get_size(n->cards))) / 
+        (n->played + 1);
+    n->played++;
 }
 
 /*******************************************************************************
@@ -301,19 +307,19 @@ void update_stats(deck_t n, int correct){
  * - none
 *******************************************************************************/
 void update_stats_at(deck_t n, int pos, int correct){
-  deck_t temp;
-  temp = n;
-  int i;
-  for(i = 0; i < get_deck_size(n); i++){
-    if(i == pos){
-      temp->accuracy = ((temp->accuracy * temp->played) + 
-        (correct / get_size(temp->cards))) / 
-        (temp->played + 1);
-      temp->played++;
-      return;
+    deck_t temp;
+    temp = n;
+    int i;
+    for(i = 0; i < get_deck_size(n); i++){
+        if(i == pos){
+            temp->accuracy = ((temp->accuracy * temp->played) + 
+                (correct / get_size(temp->cards))) / 
+                (temp->played + 1);
+            temp->played++;
+            return;
+        }
+        temp = temp->next;
     }
-    temp = temp->next;
-  }
 }
 
 /*******************************************************************************
@@ -324,10 +330,10 @@ void update_stats_at(deck_t n, int pos, int correct){
  * - int (amount of decks)
 *******************************************************************************/
 int get_deck_size(deck_t n){
-  if(n->next == NULL){
-    return 1;
-  }
-  return get_deck_size(n->next) + 1;
+    if(n->next == NULL){
+        return 1;
+    }
+    return get_deck_size(n->next) + 1;
 }
 
 /*******************************************************************************
@@ -338,5 +344,5 @@ int get_deck_size(deck_t n){
  * - deck_t (next deck)
 *******************************************************************************/
 deck_t get_next_deck(deck_t n){
-  return n->next;
+    return n->next;
 }
