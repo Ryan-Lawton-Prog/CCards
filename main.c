@@ -81,6 +81,15 @@ void login(deck_t deck, deck_t community_deck, user_t*user){
     print_login();
 }
 
+
+/*******************************************************************************
+ * Loads community decks from the community decks database then returns
+ * the top of the deck heap
+ * inputs:
+ * - None
+ * outputs:
+ * - deck_t
+*******************************************************************************/
 deck_t load_community_decks(){
     deck_t final_deck = create_deck();
     deck_t temp_deck = create_deck();
@@ -132,6 +141,13 @@ deck_t load_community_decks(){
     return final_deck;
 }
 
+/*******************************************************************************
+ * Saves the in memory community deck to the community deck database
+ * inputs:
+ * - deck_t
+ * outputs:
+ * - None
+*******************************************************************************/
 void save_community_decks(deck_t deck){
     deck_t current_deck = deck;
     card_t current_card = deck->cards;
