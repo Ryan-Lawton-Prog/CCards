@@ -3,18 +3,18 @@ author Ryan Lawton
 owner Fred
 played 10
 accuracy 0.500000
-What is 1 + 1?
-answer 2
-What is 2 + 2?
-answer 4
+question does 1 + 1 = 1?
+answer no
+question does 1 + 1 = 2?
+answer yes
 end deck
 name House of cards2
 author Bryan Lawton
 owner Larry
 played 4
 accuracy 0.200000
-What is 1 + 1?
-answer 2
-What is 2 + 2?
-answer 4
+question does 1 + 1 = 1?
+answer no
+question does 1 + 1 = 2?
+answer yes
 end deck
