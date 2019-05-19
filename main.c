@@ -7,7 +7,7 @@
  *  Gordon Wang - 
  *  Jenny Tran - 
  *  Ryan Lawton - 12545341
- * Date of submission: ?
+ * Date of submission: 28/5/2019
 *******************************************************************************/
 
 #include "deck.h"
