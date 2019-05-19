@@ -124,7 +124,13 @@ deck_t load_community_decks(){
         }else{
             if(!strcmp(temp_l, "end")){
                 reading_cards = 0;
-                final_deck = add_deck(final_deck, temp_deck->name, temp_deck->author, "", 1, temp_deck->played, temp_deck->accuracy, final_card);
+                final_deck = add_deck(final_deck, 
+                    temp_deck->name, 
+                    temp_deck->author,
+                    "", 1, 
+                    temp_deck->played, 
+                    temp_deck->accuracy, 
+                    final_card);
                 temp_card = create_card();
                 final_card = create_card();
                 temp_deck = create_deck();
@@ -132,7 +138,9 @@ deck_t load_community_decks(){
                 strcpy(temp_card->question,temp_r);
             }else if(!strcmp(temp_l, "answer")){
                 strcpy(temp_card->answer,temp_r);
-                final_card = add_card(final_card, temp_card->question, temp_card->answer);
+                final_card = add_card(final_card, 
+                    temp_card->question, 
+                    temp_card->answer);
                 temp_card = create_card();
             }
         }
