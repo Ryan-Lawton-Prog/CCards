@@ -5,5 +5,6 @@
 
 
 void test_add_card();
+void test_community_decks(deck_t);
 
 #endif
