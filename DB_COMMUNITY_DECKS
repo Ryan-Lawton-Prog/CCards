@@ -1,6 +1,5 @@
 name House of cards
 author Ryan Lawton
-owner Fred
 played 10
 accuracy 0.500000
 question does 1 + 1 = 1?
@@ -10,7 +9,6 @@ answer yes
 end deck
 name House of cards2
 author Bryan Lawton
-owner Larry
 played 4
 accuracy 0.200000
 question does 1 + 1 = 1?

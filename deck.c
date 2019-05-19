@@ -13,6 +13,7 @@ deck_t create_deck(){
     strcpy(temp->name, "");
     strcpy(temp->author, "");
     strcpy(temp->owner, "");
+    temp->is_public = 0;
     temp->played = 0;
     temp->accuracy = 0;
     temp->cards = NULL;
@@ -30,7 +31,8 @@ deck_t create_deck(){
 deck_t add_deck(deck_t head, 
         const char name[], 
         const char author[], 
-        const char owner[], 
+        const char owner[],
+        int is_public, 
         int played, 
         double accuracy, 
         card_t cards){
@@ -39,6 +41,7 @@ deck_t add_deck(deck_t head,
     strcpy(temp->name,name);
     strcpy(temp->author,author);
     strcpy(temp->owner,owner);
+    temp->is_public = is_public;
     temp->played = played;
     temp->accuracy = accuracy;
     temp->cards = cards;

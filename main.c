@@ -106,8 +106,6 @@ deck_t load_community_decks(){
                 strcpy(temp_deck->name,temp_r);
             }else if(!strcmp(temp_l, "author")){
                 strcpy(temp_deck->author,temp_r);
-            }else if(!strcmp(temp_l, "owner")){
-                strcpy(temp_deck->owner,temp_r);
             }else if(!strcmp(temp_l, "played")){
                 sscanf(temp_r, "%d", &temp_deck->played);
             }else if(!strcmp(temp_l, "accuracy")){
@@ -117,7 +115,7 @@ deck_t load_community_decks(){
         }else{
             if(!strcmp(temp_l, "end")){
                 reading_cards = 0;
-                final_deck = add_deck(final_deck, temp_deck->name, temp_deck->author, temp_deck->owner, temp_deck->played, temp_deck->accuracy, final_card);
+                final_deck = add_deck(final_deck, temp_deck->name, temp_deck->author, "", 1, temp_deck->played, temp_deck->accuracy, final_card);
                 temp_card = create_card();
                 final_card = create_card();
                 temp_deck = create_deck();
@@ -147,7 +145,6 @@ void save_community_decks(deck_t deck){
         }
         fprintf(filep, "%s %s\n", "name", current_deck->name);
         fprintf(filep, "%s %s\n", "author", current_deck->author);
-        fprintf(filep, "%s %s\n", "owner", current_deck->owner);
         fprintf(filep, "%s %d\n", "played", current_deck->played);
         fprintf(filep, "%s %lf\n", "accuracy", current_deck->accuracy);
         int j;
