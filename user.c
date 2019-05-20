@@ -1,5 +1,7 @@
 #include "user.h"
 
+#define DB_USERS "DB_USERS"
+
 /*******************************************************************************
  * Used to create an empty user
  * inputs:
