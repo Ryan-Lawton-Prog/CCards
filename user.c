@@ -1,7 +1,5 @@
 #include "user.h"
 
-#define DB_USERS "DB_USERS"
-
 /*******************************************************************************
  * Used to create an empty user
  * inputs:
@@ -153,10 +151,8 @@ void update_user_db(user_t user){
         printf("Could not find Users DB\n");
         return;
     }
-    printf("adding user\n");
     fprintf(filep, "%s %s\n", "username", user.username);
     fprintf(filep, "%s %s\n", "password", user.password);
     fprintf(filep, "%s %s\n", "fullname", user.fullname);
-    printf("done\n");
     fclose(filep);
 }

@@ -5,6 +5,7 @@
 
 #define MAX_NAME_LENGTH 20
 #define MAX_CARD_ANSWER_LENGTH 100
+#define DB_USERS "DB_USERS"
 
 /*******************************************************************************
  * deck struct - used as a linked list for storing each deck without having
