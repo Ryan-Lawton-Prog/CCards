@@ -28,5 +28,6 @@ int check_password(user_t);
 user_t set_fullname(user_t, const char[]);
 user_t set_username(user_t, const char[]);
 user_t set_password(user_t, const char[]);
+void update_user_db(user_t);
 
 #endif
