@@ -62,7 +62,30 @@ int check_username(user_t user){
  * - none
 *******************************************************************************/
 int check_password(user_t user){
-    return 1;
+    FILE * filep;
+    filep = fopen(DB_USERS, "r");
+    if(filep == NULL){
+        printf("Could not find Users DB\n");
+        return 0;
+    }
+    int eof = 1;
+    while(eof){
+        char temp_l[100] = {'\0'};
+        char temp_r[100] = {'\0'};
+        eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+        if(!eof){
+            break;
+        }
+        if(!strcmp(temp_l, "username") && !strcmp(temp_r, user.username)){
+            eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+            if(!strcmp(temp_l, "password") && !strcmp(temp_r, user.password)){
+                fclose(filep);
+                return 1;
+            }
+        }
+    }
+    fclose(filep);
+    return 0;
 }
 
 /*******************************************************************************
