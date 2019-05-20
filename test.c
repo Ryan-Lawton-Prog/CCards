@@ -40,3 +40,11 @@ void test_community_decks(deck_t deck){
     }
   }
 }
+
+void test_add_user(){
+    user_t user;
+    strcpy(user.fullname, "Ryan Lawton");
+    strcpy(user.username, "Lawyer");
+    strcpy(user.password, "password");
+    update_user_db(user);
+}
