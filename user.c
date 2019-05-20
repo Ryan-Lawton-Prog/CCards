@@ -51,6 +51,28 @@ void get_fullname(user_t user, char fullname[]){
  * - none
 *******************************************************************************/
 int check_username(user_t user){
+    FILE * filep;
+    filep = fopen(DB_USERS, "r");
+    if(filep == NULL){
+        printf("Could not find Users DB\n");
+        return 1;
+    }
+    int eof = 1;
+    while(eof){
+        char temp_l[100] = {'\0'};
+        char temp_r[100] = {'\0'};
+        eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+        if(!eof){
+            break;
+        }
+        if(!strcmp(temp_l, "username")){
+            if(!strcmp(temp_r, user.username)){
+                fclose(filep);
+                return 0;
+            }
+        }
+    }
+    fclose(filep);
     return 1;
 }
 
