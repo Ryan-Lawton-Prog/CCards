@@ -43,6 +43,7 @@ int main(){
     while(menu != -1){
         if(logged_in){
             print_menu();
+            printf("menu: ");
             scanf("%d",&menu);
             /* -1: Exit
              *  1: View Decks
