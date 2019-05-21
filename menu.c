@@ -5,7 +5,7 @@ void clear_screen(){
 }
 
 void print_menu(){
-    
+
 }
 
 void print_login(){
@@ -26,6 +26,7 @@ void print_community_decks(deck_t decks){
         }
         print_community_deck(temp);
     }
+    printf("Enter the name of the deck to view or type \"exit\" to go back to the Main Menu\n> ");
 }
 
 void wait(){
