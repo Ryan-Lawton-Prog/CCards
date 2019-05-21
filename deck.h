@@ -32,6 +32,7 @@ typedef struct deck * deck_t;
 deck_t create_deck();
 deck_t add_deck(deck_t, const char[], const char[], 
     const char[], int, int, double, card_t);
+deck_t insert_deck(deck_t);
 void get_name(deck_t, char[]);
 void get_name_at(deck_t, int, char[]);
 card_t get_cards(deck_t);
@@ -46,6 +47,7 @@ void get_author(deck_t, char[]);
 void get_author_at(deck_t, int, char[]);
 void get_owner(deck_t, char[]);
 void get_owner_at(deck_t, int, char[]);
+void set_owner(deck_t, const char[]);
 void update_stats(deck_t, int);
 void update_stats_at(deck_t, int, int);
 int get_deck_size(deck_t);

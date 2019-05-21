@@ -1,0 +1,11 @@
+name House of cards2
+author Bryan Lawton
+owner 
+is_public 0
+played 0
+accuracy 0.000000
+question does 1 + 1 = 1?
+answer no
+question does 1 + 1 = 2?
+answer yes
+end deck

@@ -1,7 +1,5 @@
 name House of cards
 author Ryan Lawton
-played 10
-accuracy 0.500000
 question does 1 + 1 = 1?
 answer no
 question does 1 + 1 = 2?
@@ -9,8 +7,6 @@ answer yes
 end deck
 name House of cards2
 author Bryan Lawton
-played 4
-accuracy 0.200000
 question does 1 + 1 = 1?
 answer no
 question does 1 + 1 = 2?

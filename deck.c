@@ -58,6 +58,10 @@ deck_t add_deck(deck_t head,
     return head;
 }
 
+deck_t insert_deck(deck_t deck){
+    return add_deck(deck, deck->name, deck->author, deck->owner, deck->is_public, deck->played, deck->accuracy, deck->cards);
+}
+
 /*******************************************************************************
  * get name from the deck 'n' and write it to the given array
  * inputs:
@@ -361,7 +365,7 @@ void update_deck_db(deck_t n){
     deck_t current_deck = n;
     card_t current_card = n->cards;
     FILE * filep;
-    filep = fopen(DB_COMMUNITY_DECKS, "w");
+    filep = fopen(DB_DECKS, "a");
     fprintf(filep, "%s %s\n", "name", current_deck->name);
     fprintf(filep, "%s %s\n", "author", current_deck->author);
     fprintf(filep, "%s %s\n", "owner", current_deck->owner);
@@ -428,10 +432,6 @@ deck_t load_community_decks(){
                 strcpy(temp_deck->name,temp_r);
             }else if(!strcmp(temp_l, "author")){
                 strcpy(temp_deck->author,temp_r);
-            }else if(!strcmp(temp_l, "played")){
-                sscanf(temp_r, "%d", &temp_deck->played);
-            }else if(!strcmp(temp_l, "accuracy")){
-                sscanf(temp_r, "%lf", &temp_deck->accuracy);
                 reading_cards = 1;
             }
         }else{
@@ -482,8 +482,6 @@ void save_community_decks(deck_t deck){
         }
         fprintf(filep, "%s %s\n", "name", current_deck->name);
         fprintf(filep, "%s %s\n", "author", current_deck->author);
-        fprintf(filep, "%s %d\n", "played", current_deck->played);
-        fprintf(filep, "%s %lf\n", "accuracy", current_deck->accuracy);
         int j;
         for(j = 0; j < get_size(current_deck->cards); j++){
             fprintf(filep, "%s %s\n", "question", current_card->question);
