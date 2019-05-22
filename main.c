@@ -17,6 +17,7 @@
 
 #define MAX_USERNAME_LENGTH 20
 #define MAX_PASSWORD_LENGTH 20
+#define MAX_INPUT_LENGTH 100
 
 /*******************************************************************************
  * Function prototypes
@@ -62,6 +63,7 @@ int main(){
                     create_a_deck(decks);
                     break;
                 case 4:
+                    view_community_decks(community_decks, decks, user);
                     break;
                 case 5:
                     break;
@@ -146,5 +148,36 @@ void create_a_deck(deck_t decks){
         printf("Card %d Question: %s\n", i+1, decks->cards->question);
         printf("Card %d Answer: %s\n", i+1, decks->cards->answer);
         decks->cards = decks->cards->next;
+    }
+}
+
+void view_community_decks(deck_t community_decks, deck_t decks, user_t user){
+    /*printing community decks*/
+    while(1){
+        clear_screen();
+        deck_t temp = community_decks;
+        char input[100];
+        int i;
+        print_community_decks(community_decks);
+        while((getchar()) != '\n');
+        scanf("%[^\n]", input);
+        if(!strcmp(input, "exit")){
+            return;
+        }else{
+            temp = community_decks;
+            int size = get_deck_size(community_decks);
+            for(i = 0; i < size; i++){
+                if(i > 0){
+                    temp = temp->next;
+                }
+                if(!strcmp(input, temp->name)){
+                    decks = add_deck(decks, temp->name, temp->author, user.username, 0, 0, 0, temp->cards);
+                    update_deck_db(get_last_deck(decks));
+                    printf("Added: \"%s\" to you deck collection\n", input);
+                    return;
+                }
+            }
+        }
+        print_invalid_deck();
     }
 }
