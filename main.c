@@ -122,7 +122,7 @@ void create_a_deck(deck_t decks, deck_t community_deck, user_t user){
                 printf("Invalid choice\n");
             }
         }
-    } 
+    }
 
     while(is_public == 0){
         printf("Do you want make this deck public or private? "
