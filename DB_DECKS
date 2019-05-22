@@ -9,3 +9,39 @@ answer no
 question does 1 + 1 = 2?
 answer yes
 end deck
+name Ryan's Deck
+author 
+owner 
+is_public 0
+played 0
+accuracy 0.000000
+question Does this have color?no
+answer no
+end deck
+name Test
+author 
+owner 
+is_public 0
+played 0
+accuracy 0.000000
+question Is this a question?
+answer yes
+end deck
+name test
+author 
+owner 
+is_public 0
+played 0
+accuracy 0.000000
+question test
+answer test
+end deck
+name se of cards?
+author 
+owner 
+is_public 0
+played 0
+accuracy 0.000000
+question Who is the main charaKevin Spacy
+answer Kevin Spacy
+end deck

@@ -26,6 +26,7 @@
 void view_decks();
 void create_a_deck(deck_t, deck_t, user_t);
 void view_community_decks();
+void view_community_deck(deck_t, deck_t);
 void view_user_stats();
 void login(deck_t, deck_t, user_t*);
 
@@ -41,29 +42,27 @@ int main(){
     while(menu != -1){
         if(logged_in){
             print_menu();
-            printf("menu: ");
             scanf("%d",&menu);
-            /* -1: Exit
+            /* 0: Exit
              *  1: View Decks
              *  2: Create Deck
-             *  4: View Community Decks
+             *  3: View Community Decks
              */
             switch(menu){
-                case -1:
+                case 0:
+                    menu = -1;
                     break;
                 case 1:
                     test_add_card();
                     break;
                 case 2:
-                    if(strcmp(community_decks->name, "") > 0){
-                        save_community_decks(community_decks);
-                    }
-                    break;
-                case 3:
                     create_a_deck(decks, community_decks, user);
                     break;
-                case 4:
+                case 3:
                     view_community_decks(community_decks, decks, user);
+                    break;
+                case 4:
+                    view_decks();
                     break;
                 case 5:
                     break;
@@ -90,28 +89,27 @@ void create_a_deck(deck_t decks, deck_t community_deck, user_t user){
     char user_input[MAX_INPUT_LENGTH];
     int is_public = 0;
     int choice = 0;
-
+    clear_screen();
     do{
         while((getchar()) != '\n');
-        printf("What do you want to name your deck?\n");
+        print_yellow("What do you want to name your deck?\n> ",1);
         scanf("%[^\n]", name);
     } while (name[0] == '\0');
 
 
     while(choice != -1){
         while((getchar()) != '\n');
-        printf("Write your question card:\n");
+        print_yellow("Write your question card:\n> ",1);
         scanf("%[^\n]", question);
         while((getchar()) != '\n');
-        printf("Write your answer card:\n");
+        print_yellow("Write your answer card:\n> ",1);
         scanf("%[^\n]", answer);
 
         cards = add_card(cards, question, answer);
 
         while(choice != -1){
             while((getchar()) != '\n');
-            printf("Do you want to add more cards? " 
-                   "Type 'yes' to continue or 'no' to stop\n");
+            print_card_creation();
             scanf("%[^\n]", user_input);
             
             if(strcmp(user_input, "no") == 0){
@@ -138,11 +136,13 @@ void create_a_deck(deck_t decks, deck_t community_deck, user_t user){
     }
     
     if(is_public == 1){
-        community_deck = add_deck(community_deck, name, user.fullname, "", is_public, 0, 0, cards);
+        community_deck = add_deck(community_deck, name, user.fullname,
+             "", is_public, 0, 0, cards);
         save_community_decks(community_deck);
     }
 
-    decks = add_deck(decks, name, user.fullname, user.username, is_public, 0, 0, cards);
+    decks = add_deck(decks, name, user.fullname, user.username,
+         is_public, 0, 0, cards);
     update_deck_db(get_last_deck(decks));
 }
 
@@ -166,7 +166,8 @@ void view_community_decks(deck_t community_decks, deck_t decks, user_t user){
                     temp = temp->next;
                 }
                 if(!strcmp(input, temp->name)){
-                    decks = add_deck(decks, temp->name, temp->author, user.username, 0, 0, 0, temp->cards);
+                    decks = add_deck(decks, temp->name, temp->author,
+                        user.username, 0, 0, 0, temp->cards);
                     update_deck_db(get_last_deck(decks));
                     printf("Added: \"%s\" to you deck collection\n", input);
                     return;
@@ -175,4 +176,8 @@ void view_community_decks(deck_t community_decks, deck_t decks, user_t user){
         }
         print_invalid_deck();
     }
+}
+
+void view_community_deck(deck_t deck, deck_t decks){
+
 }

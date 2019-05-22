@@ -59,7 +59,8 @@ deck_t add_deck(deck_t head,
 }
 
 deck_t insert_deck(deck_t deck){
-    return add_deck(deck, deck->name, deck->author, deck->owner, deck->is_public, deck->played, deck->accuracy, deck->cards);
+    return add_deck(deck, deck->name, deck->author, deck->owner,
+        deck->is_public, deck->played, deck->accuracy, deck->cards);
 }
 
 /*******************************************************************************
@@ -492,3 +493,7 @@ void save_community_decks(deck_t deck){
     }
     fclose(filep);
 }
+
+/*int check_deck_exists(const char name[]){
+
+}*/
