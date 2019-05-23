@@ -494,6 +494,26 @@ void save_community_decks(deck_t deck){
     fclose(filep);
 }
 
-/*int check_deck_exists(const char name[]){
-
-}*/
+int check_deck_exists(const char name[]){
+    FILE * filep;
+    filep = fopen(DB_COMMUNITY_DECKS, "r");
+    if(filep == NULL){
+        printf("Could not find Community Deck DB\n");
+        return 1;
+    }
+    int eof = 1;
+    while(eof){
+        char temp_l[100] = {'\0'};
+        char temp_r[100] = {'\0'};
+        eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+        if(!eof){
+            break;
+        }
+        if(!strcmp(temp_l, "name") && !strcmp(temp_r, name)){
+            fclose(filep);
+            return 1;
+        }
+    }
+    fclose(filep);
+    return 0;
+}

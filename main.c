@@ -11,7 +11,7 @@
 *******************************************************************************/
 
 #include "deck.h"
-#include "menu.h"
+#include "print.h"
 #include "user.h"
 #include "test.h"
 
@@ -25,8 +25,8 @@
 
 void view_decks();
 void create_a_deck(deck_t, deck_t, user_t);
-void view_community_decks();
-void view_community_deck(deck_t, deck_t);
+void view_community_decks(deck_t, deck_t, user_t);
+void view_community_deck(deck_t, deck_t, user_t);
 void view_user_stats();
 void login(deck_t, deck_t, user_t*);
 
@@ -62,7 +62,6 @@ int main(){
                     view_community_decks(community_decks, decks, user);
                     break;
                 case 4:
-                    view_decks();
                     break;
                 case 5:
                     break;
@@ -165,11 +164,8 @@ void view_community_decks(deck_t community_decks, deck_t decks, user_t user){
                 if(i > 0){
                     temp = temp->next;
                 }
-                if(!strcmp(input, temp->name)){
-                    decks = add_deck(decks, temp->name, temp->author,
-                        user.username, 0, 0, 0, temp->cards);
-                    update_deck_db(get_last_deck(decks));
-                    printf("Added: \"%s\" to you deck collection\n", input);
+                if(strcmp(input, temp->name) <= 1){
+                    view_community_deck(temp, decks, user);
                     return;
                 }
             }
@@ -178,6 +174,29 @@ void view_community_decks(deck_t community_decks, deck_t decks, user_t user){
     }
 }
 
-void view_community_deck(deck_t deck, deck_t decks){
-
+void view_community_deck(deck_t deck, deck_t decks, user_t user){
+    int menu = 0;
+    int show_answers = 0;
+    while(menu != -1){
+        print_community_cards(deck, show_answers);
+        scanf("%d",&menu);
+        switch(menu){
+            case 0:
+                menu = -1;
+                break;
+            case 1:
+                decks = add_deck(decks, deck->name, deck->author,
+                    user.username, 0, 0, 0, deck->cards);
+                update_deck_db(get_last_deck(decks));
+                print_add_deck();
+                menu = -1;
+                break;
+            case 2:
+                show_answers = 1;
+                break;
+            default:
+                printf("Invalid choice\n");
+                break;
+        }
+    }
 }

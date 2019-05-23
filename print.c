@@ -1,4 +1,4 @@
-#include "menu.h"
+#include "print.h"
 
 void print_red(const char text[], int bold){
     if(bold == 1){
@@ -72,6 +72,36 @@ void print_community_decks(deck_t decks){
     print_yellow("' to go back to the Main Menu\n> ", 0);
 }
 
+void print_community_card(card_t card, int show_answer){
+    print_yellow("Question: ",0);
+    printf("%s\n", card->question);
+    if(show_answer){
+        print_yellow("Answer: ",0);
+        printf("%s\n", card->answer);
+    }
+    printf("\n");
+}
+
+void print_community_cards(deck_t deck, int show_answer){
+    clear_screen();
+    card_t temp = deck->cards;
+    int i;
+    print_community_deck(deck);
+    for(i = 0; i < get_size(deck->cards); i++){
+        if(i > 0){
+            temp = temp->next;
+        }
+        print_community_card(temp, show_answer);
+    }
+    print_yellow("Would you like to:\n", 1);
+    print_yellow("0: ", 0);
+    printf("Exit to menu\n");
+    print_yellow("1: ", 0);
+    printf("Add this deck to your list\n");
+    print_yellow("2: ", 0);
+    printf("Show question answers\n> ");
+}
+
 void wait(){
     char input[100];
     printf("Enter any key\n");
@@ -99,4 +129,10 @@ void print_card_creation(){
     print_yellow("' to continue or '",0);
     print_green("no",0);
     print_yellow("' to stop\n> ",0);
+}
+
+void print_add_deck(){
+    clear_screen();
+    print_yellow("Added to your deck collection\n", 0);
+    wait();
 }

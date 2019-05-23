@@ -1,14 +1,12 @@
-name House of cards
-author Ryan Lawton
-question does 1 + 1 = 1?
-answer no
-question does 1 + 1 = 2?
-answer yes
-end deck
 name House of cards2
 author Bryan Lawton
 question does 1 + 1 = 1?
 answer no
 question does 1 + 1 = 2?
 answer yes
+end deck
+name Ryan's Deck
+author 
+question Does this have color?no
+answer no
 end deck

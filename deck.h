@@ -56,5 +56,6 @@ void update_deck_db(deck_t);
 deck_t get_last_deck(deck_t);
 deck_t load_community_decks();
 void save_community_decks(deck_t);
+int check_deck_exists(const char[]);
 
 #endif
