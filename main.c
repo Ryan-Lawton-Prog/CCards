@@ -57,7 +57,7 @@ int main(){
                     menu = -1;
                     break;
                 case 1:
-                    test_add_card();
+                    view_decks();
                     break;
                 case 2:
                     create_a_deck(decks, community_decks, user);
@@ -80,6 +80,24 @@ int main(){
     return 0;
 }
 
+/*******************************************************************************
+ * 
+ * inputs:
+ * - None
+ * outputs:
+ * - None
+*******************************************************************************/
+void view_decks(){
+
+}
+
+/*******************************************************************************
+ * Creates a deck for a user and stores it into the database
+ * inputs:
+ * - deck_t, deck_t, user
+ * outputs:
+ * - None
+*******************************************************************************/
 void create_a_deck(deck_t decks, deck_t community_deck, user_t user){
     card_t cards = create_card();
     char name[MAX_DECK_NAME_LENGTH];
@@ -145,6 +163,15 @@ void create_a_deck(deck_t decks, deck_t community_deck, user_t user){
     update_deck_db(get_last_deck(decks));
 }
 
+
+/*******************************************************************************
+ * Views all the community decks and allows
+ * users to add them to their collction.
+ * inputs:
+ * - deck_t, deck_t, user_t
+ * outputs:
+ * - None
+*******************************************************************************/
 void view_community_decks(deck_t community_decks, deck_t decks, user_t user){
     /*printing community decks*/
     while(1){
@@ -174,6 +201,14 @@ void view_community_decks(deck_t community_decks, deck_t decks, user_t user){
     }
 }
 
+/*******************************************************************************
+ * Views a single community deck and it's corresponding cards
+ * either with or without answers
+ * inputs:
+ * - deck_t, deck_t, user_t
+ * outputs:
+ * - None
+*******************************************************************************/
 void view_community_deck(deck_t deck, deck_t decks, user_t user){
     int menu = 0;
     int show_answers = 0;
@@ -201,7 +236,13 @@ void view_community_deck(deck_t deck, deck_t decks, user_t user){
     }
 }
 
-/* Return 1 if logged in, 0 if not logged in */
+/*******************************************************************************
+ * Menu's to let a user login. returns if it was successful or not
+ * inputs:
+ * - deck_t, deck_t, user_t*
+ * outputs:
+ * - None
+*******************************************************************************/
 int login(deck_t deck, deck_t community_deck, user_t *user) {
 	int success = 0;
 	int login_menu_choice = 0;
@@ -230,6 +271,13 @@ int login(deck_t deck, deck_t community_deck, user_t *user) {
 	return success;
 }
 
+/*******************************************************************************
+ * Menu's to login with an existing account
+ * inputs:
+ * - deck_t, deck_t, user_t*
+ * outputs:
+ * - None
+*******************************************************************************/
 int login_existing_account(deck_t deck, deck_t community_deck, user_t *user){
     print_existing_account(user);
     if (check_password(*user) == 0) {
@@ -246,6 +294,13 @@ int login_existing_account(deck_t deck, deck_t community_deck, user_t *user){
     return 0;
 }
 
+/*******************************************************************************
+ * Menu's create a new account
+ * inputs:
+ * - deck_t, deck_t, user_t*
+ * outputs:
+ * - None
+*******************************************************************************/
 int create_new_account(deck_t deck, deck_t community_deck, user_t *user){
     char input_fullname[MAX_NAME_LENGTH+2] = "";
     char input_username[MAX_USERNAME_LENGTH+2] = "";

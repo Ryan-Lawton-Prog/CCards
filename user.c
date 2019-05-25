@@ -144,6 +144,13 @@ user_t set_password(user_t user, const char password[]){
     return user;
 }
 
+/*******************************************************************************
+ * Updates the user database with new user credentials
+ * inputs:
+ * - user_t
+ * outputs:
+ * - None
+*******************************************************************************/
 void update_user_db(user_t user){
     FILE * filep;
     filep = fopen(DB_USERS, "a");

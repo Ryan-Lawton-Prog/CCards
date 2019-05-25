@@ -494,6 +494,13 @@ void save_community_decks(deck_t deck){
     fclose(filep);
 }
 
+/*******************************************************************************
+ * Checks to see if the deck name exists across all users
+ * inputs:
+ * - string (deck name)
+ * outputs:
+ * - int
+*******************************************************************************/
 int check_deck_exists(const char name[]){
     FILE * filep;
     filep = fopen(DB_COMMUNITY_DECKS, "r");
