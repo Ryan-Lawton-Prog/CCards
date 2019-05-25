@@ -315,12 +315,12 @@ int create_new_account(deck_t deck, deck_t community_deck, user_t *user){
         }
     }
     
-    printf("\n");
     update_user_db(*user);
-    printf("User account successfully created with the following details:\n");
-    printf("Username: %s\n", user->username);
-    printf("Full name: %s\n", user->fullname);
-    printf("Password: %s\n", user->password);
+    clear_screen();
+    print_green("Successfully created your account\n", 0);
+    print_yellow("Welcome ", 1);
+    print_blue(user->fullname, 1);
     printf("\n");
+    wait();
     return 1;
 }

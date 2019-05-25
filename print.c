@@ -27,6 +27,15 @@ void print_yellow(const char text[], int bold){
     printf("%s", text);
     printf("\033[0m");
 }
+void print_blue(const char text[], int bold){
+    if(bold == 1){
+        printf("\033[1;34m");
+    }else{
+        printf("\033[0;34m");
+    }
+    printf("%s", text);
+    printf("\033[0m");
+}
 
 void clear_screen(){
     printf("\e[1;1H\e[2J");

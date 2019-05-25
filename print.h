@@ -10,6 +10,7 @@
 void print_red(const char[], int);
 void print_green(const char[], int);
 void print_yellow(const char[], int);
+void print_blue(const char[], int);
 void clear_screen();
 void print_menu();
 void print_login_menu();
