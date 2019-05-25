@@ -3,7 +3,7 @@
 
 #include "deck.h"
 
-#define MAX_NAME_LENGTH 20
+#define MAX_NAME_LENGTH 40
 #define MAX_CARD_ANSWER_LENGTH 100
 #define DB_USERS "DB_USERS"
 

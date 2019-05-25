@@ -34,6 +34,7 @@ void clear_screen(){
 
 void print_menu(){
     clear_screen();
+    print_green("MAIN MENU\n-----------\n\n", 1);
     print_yellow("Would you like to:\n", 1);
     print_yellow("0: ", 0);
     printf("Exit Program\n");
@@ -45,9 +46,17 @@ void print_menu(){
     printf("View the communties decks\n> ");
 }
 
-void print_login(){
-    
+/* Login Menu options */
+void print_login_menu() {
+    clear_screen();
+	print_green("LOG-IN MENU\n-----------\n\n", 1);
+	print_yellow("Enter an option from the list below:\n", 1);
+    print_yellow("1: ", 0);
+	printf("Log in with an existing account.\n");
+    print_yellow("2: ", 0);
+	printf("Create a new account.\n> ");
 }
+
 
 void print_community_deck(deck_t deck){
     print_yellow("Title: ",0);
@@ -135,4 +144,15 @@ void print_add_deck(){
     clear_screen();
     print_yellow("Added to your deck collection\n", 0);
     wait();
+}
+
+void print_existing_account(user_t*user){
+    clear_screen();
+    print_yellow("Enter your log-in details!\n", 1);
+    print_yellow("Username: ", 0);
+    while((getchar()) != '\n');
+    scanf("%[^\n]", user->username);
+    print_yellow("Password: ", 0);
+    while((getchar()) != '\n');
+    scanf("%[^\n]", user->password);
 }

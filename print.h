@@ -12,7 +12,7 @@ void print_green(const char[], int);
 void print_yellow(const char[], int);
 void clear_screen();
 void print_menu();
-void print_login();
+void print_login_menu();
 void print_community_deck(deck_t);
 void print_community_decks(deck_t);
 void print_community_cards(deck_t,  int);
@@ -22,5 +22,6 @@ void print_invalid_deck();
 void print_invalid_command();
 void print_card_creation();
 void print_add_deck();
+void print_existing_account(user_t*);
 
 #endif

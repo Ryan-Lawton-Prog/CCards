@@ -28,14 +28,18 @@ void create_a_deck(deck_t, deck_t, user_t);
 void view_community_decks(deck_t, deck_t, user_t);
 void view_community_deck(deck_t, deck_t, user_t);
 void view_user_stats();
-void login(deck_t, deck_t, user_t*);
+int login(deck_t, deck_t, user_t*);
+int create_new_account(deck_t, deck_t, user_t*);
+int login_existing_account(deck_t, deck_t, user_t*);
+int check_username_format(const char[]);
+int check_password_format(const char[]);
 
 /*******************************************************************************
  * Main
 *******************************************************************************/
 int main(){
     int menu = 0;
-    int logged_in = 1; /*once loggin has been implemented set to 0*/
+    int logged_in = 0; /*once loggin has been implemented set to 0*/
     deck_t decks = create_deck();
     deck_t community_decks = load_community_decks();
     user_t user = create_user();
@@ -66,18 +70,14 @@ int main(){
                 case 5:
                     break;
                 default:
-                    printf("Invalid choice\n");
+                    print_red("Invalid choice\n", 1);
                     break;
             }
         }else{
-            login(decks, community_decks, &user);
+            logged_in = login(decks, community_decks, &user);
         }
     }
     return 0;
-}
-
-void login(deck_t deck, deck_t community_deck, user_t*user){
-    print_login();
 }
 
 void create_a_deck(deck_t decks, deck_t community_deck, user_t user){
@@ -116,7 +116,7 @@ void create_a_deck(deck_t decks, deck_t community_deck, user_t user){
             } else if (strcmp(user_input, "yes") == 0){
                 break;
             } else {
-                printf("Invalid choice\n");
+                print_red("Invalid choice\n", 1);
             }
         }
     }
@@ -129,7 +129,7 @@ void create_a_deck(deck_t decks, deck_t community_deck, user_t user){
         if(is_public == 1 || is_public == 0){
             break;
         } else {
-            printf("Invalid choice\n");
+            print_red("Invalid choice\n", 1);
             is_public = 0;
         }
     }
@@ -195,8 +195,132 @@ void view_community_deck(deck_t deck, deck_t decks, user_t user){
                 show_answers = 1;
                 break;
             default:
-                printf("Invalid choice\n");
+                print_red("Invalid choice\n", 1);
                 break;
         }
     }
+}
+
+/* Return 1 if logged in, 0 if not logged in */
+int login(deck_t deck, deck_t community_deck, user_t *user) {
+	int success = 0;
+	int login_menu_choice = 0;
+
+	fflush(stdin);
+    while(success == 0){
+        print_login_menu();
+        scanf("%d", &login_menu_choice);
+        printf("\n");
+        switch(login_menu_choice) {
+            case 1: /* Log in to existing account */
+                success = login_existing_account(deck, community_deck, user);
+                break;
+            case 2: /*Create a new account.*/
+                success = create_new_account(deck, community_deck, user);
+                break;
+            default:
+                print_red("Invalid choice\n", 1);
+                success = 0;
+                break;
+        }
+
+        printf("\n");
+        fflush(stdin);
+    }
+	return success;
+}
+
+int login_existing_account(deck_t deck, deck_t community_deck, user_t *user){
+    print_existing_account(user);
+    if (check_password(*user) == 0) {
+        clear_screen();
+        print_red("Invalid credentials!\n", 1);
+        wait();
+    }
+    else {
+        clear_screen();
+        print_green("Log-in successful.\n", 1);
+        wait();
+        return 1;
+    }
+    return 0;
+}
+
+int create_new_account(deck_t deck, deck_t community_deck, user_t *user){
+    char input_fullname[MAX_NAME_LENGTH+2] = "";
+    char input_username[MAX_USERNAME_LENGTH+2] = "";
+    char input_password[MAX_PASSWORD_LENGTH+2] = "";
+    print_yellow("Creating a new account!\nEnter details below.\n", 1);
+    /*Full name+*/
+    while((getchar()) != '\n');
+    while (strcmp(user->fullname, "") == 0) {
+        clear_screen();
+        print_yellow("Full name (maximum 40 characters):\n> ", 0);
+        scanf("%[^\n]", input_fullname);
+        if (strcmp(input_fullname, "") == 0) {
+            clear_screen();
+            print_yellow("Please enter at least one character.\n", 0);
+            wait();
+        }
+        else if(strlen(input_fullname) > MAX_NAME_LENGTH){
+            clear_screen();
+            print_yellow("Too many characters, please try again.\n", 0);
+            wait();
+        }
+        else{
+            input_fullname[-1] = '\0';
+            strcpy(user->fullname, input_fullname);
+        }
+    }
+    while((getchar()) != '\n');
+    /* Username */
+    while (strcmp(user->username, "") == 0) {
+        clear_screen();
+        print_yellow("Username (maximum 20 characters):\n> ", 0);
+        scanf("%[^\n]", input_username);
+        if (strcmp(input_username, "") == 0) {
+            clear_screen();
+            print_yellow("Please enter at least one character.\n", 0);
+            wait();
+        }
+        else if(strlen(input_username) > MAX_USERNAME_LENGTH){
+            clear_screen();
+            print_yellow("Too many characters, please try again.\n", 0);
+            wait();
+        }
+        else{
+            input_username[-1] = '\0';
+            strcpy(user->username, input_username);
+        }
+    }
+    while((getchar()) != '\n');
+    /* Password */
+    while (strcmp(user->password, "") == 0) {
+        clear_screen();
+        print_yellow("Password (maximum 20 characters):\n> ", 0);
+        scanf("%[^\n]", input_password);
+        if (strcmp(input_password, "") == 0) {
+            clear_screen();
+            print_yellow("Please enter at least one character.\n", 0);
+            wait();
+        }
+        else if(strlen(input_password) > MAX_PASSWORD_LENGTH){
+            clear_screen();
+            print_yellow("Too many characters, please try again.\n", 0);
+            wait();
+        }
+        else{
+            input_password[-1] = '\0';
+            strcpy(user->password, input_password);
+        }
+    }
+    
+    printf("\n");
+    update_user_db(*user);
+    printf("User account successfully created with the following details:\n");
+    printf("Username: %s\n", user->username);
+    printf("Full name: %s\n", user->fullname);
+    printf("Password: %s\n", user->password);
+    printf("\n");
+    return 1;
 }

@@ -66,12 +66,12 @@ int check_username(user_t user){
         if(!strcmp(temp_l, "username")){
             if(!strcmp(temp_r, user.username)){
                 fclose(filep);
-                return 0;
+                return 1;
             }
         }
     }
     fclose(filep);
-    return 1;
+    return 0;
 }
 
 /*******************************************************************************
