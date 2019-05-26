@@ -18,12 +18,15 @@
 #define MAX_USERNAME_LENGTH 20
 #define MAX_PASSWORD_LENGTH 20
 #define MAX_INPUT_LENGTH 100
+deck_t global_decks;
+deck_t global_community_decks;
 
 /*******************************************************************************
  * Function prototypes
 *******************************************************************************/
 
-void view_decks();
+void view_decks(deck_t, deck_t, user_t);
+void view_deck(deck_t, deck_t, user_t);
 void create_a_deck(deck_t, deck_t, user_t);
 void view_community_decks(deck_t, deck_t, user_t);
 void view_community_deck(deck_t, deck_t, user_t);
@@ -40,8 +43,8 @@ int check_password_format(const char[]);
 int main(){
     int menu = 0;
     int logged_in = 0; /*once loggin has been implemented set to 0*/
-    deck_t decks = create_deck();
-    deck_t community_decks = load_community_decks();
+    global_decks = create_deck();
+    global_community_decks = load_community_decks();
     user_t user = create_user();
     while(menu != -1){
         if(logged_in){
@@ -57,15 +60,16 @@ int main(){
                     menu = -1;
                     break;
                 case 1:
-                    view_decks();
+                    view_decks(global_decks, global_community_decks, user);
                     break;
                 case 2:
-                    create_a_deck(decks, community_decks, user);
+                    create_a_deck(global_decks, global_community_decks, user);
                     break;
                 case 3:
-                    view_community_decks(community_decks, decks, user);
+                    view_community_decks(global_community_decks, global_decks, user);
                     break;
                 case 4:
+                    test_user_decks(global_decks);
                     break;
                 case 5:
                     break;
@@ -74,7 +78,7 @@ int main(){
                     break;
             }
         }else{
-            logged_in = login(decks, community_decks, &user);
+            logged_in = login(global_decks, global_community_decks, &user);
         }
     }
     return 0;
@@ -87,8 +91,59 @@ int main(){
  * outputs:
  * - None
 *******************************************************************************/
-void view_decks(){
+void view_decks(deck_t user_decks,deck_t community_decks, user_t user){
+      while(1){
+        deck_t temp = user_decks;
+        char input[100];
+        int i; 
+        print_user_decks(user_decks);
+        while((getchar()) != '\n');
+        scanf("%[^\n]", input);
+        if(!strcmp(input, "exit")){
+            return;
+        }else{
+            temp = user_decks; 
+            int size = get_deck_size(user_decks);
+            for(i=0; i< size;i++){
+                if(i>0){
+                    temp = temp->next;
+                }
+                if (strcmp(input, temp->name) <= 1){
+                    view_deck(temp, user_decks, user);
+                    return; 
+                }
+            }
+        }
+    }
+}
 
+void view_deck(deck_t deck, deck_t decks, user_t user){
+     int menu = 0;
+     while(menu !=-1){
+        print_deck_menu();
+        scanf("%d",&menu);
+        switch(menu){
+            case 0: 
+                menu = -1; 
+                break; 
+            case 1:
+                decks = add_deck(decks,deck->name, deck->author,
+                user.username,0,0,0,decks->cards); 
+                update_deck_db(get_last_deck(decks));
+                print_add_deck(); 
+                menu = -1; 
+                break; 
+            case 2: 
+                break; 
+            case 3: 
+                break; 
+            case 4: 
+                break; 
+            default:
+                printf("Invalid choice\n");
+                break; 
+        }
+    }
 }
 
 /*******************************************************************************
@@ -191,7 +246,7 @@ void view_community_decks(deck_t community_decks, deck_t decks, user_t user){
                 if(i > 0){
                     temp = temp->next;
                 }
-                if(strcmp(input, temp->name) <= 1){
+                if(!strcmp(input, temp->name)){
                     view_community_deck(temp, decks, user);
                     return;
                 }
@@ -220,9 +275,9 @@ void view_community_deck(deck_t deck, deck_t decks, user_t user){
                 menu = -1;
                 break;
             case 1:
-                decks = add_deck(decks, deck->name, deck->author,
+                global_decks = add_deck(decks, deck->name, deck->author,
                     user.username, 0, 0, 0, deck->cards);
-                update_deck_db(get_last_deck(decks));
+                update_deck_db(get_last_deck(global_decks));
                 print_add_deck();
                 menu = -1;
                 break;
@@ -243,7 +298,7 @@ void view_community_deck(deck_t deck, deck_t decks, user_t user){
  * outputs:
  * - None
 *******************************************************************************/
-int login(deck_t deck, deck_t community_deck, user_t *user) {
+int login(deck_t decks, deck_t community_deck, user_t *user) {
 	int success = 0;
 	int login_menu_choice = 0;
 
@@ -254,10 +309,10 @@ int login(deck_t deck, deck_t community_deck, user_t *user) {
         printf("\n");
         switch(login_menu_choice) {
             case 1: /* Log in to existing account */
-                success = login_existing_account(deck, community_deck, user);
+                success = login_existing_account(decks, community_deck, user);
                 break;
             case 2: /*Create a new account.*/
-                success = create_new_account(deck, community_deck, user);
+                success = create_new_account(decks, community_deck, user);
                 break;
             default:
                 print_red("Invalid choice\n", 1);
@@ -278,15 +333,19 @@ int login(deck_t deck, deck_t community_deck, user_t *user) {
  * outputs:
  * - None
 *******************************************************************************/
-int login_existing_account(deck_t deck, deck_t community_deck, user_t *user){
+int login_existing_account(deck_t decks, deck_t community_deck, user_t *user){
     print_existing_account(user);
-    if (check_password(*user) == 0) {
+    if (check_password(user) == 0) {
         clear_screen();
         print_red("Invalid credentials!\n", 1);
         wait();
     }
     else {
-        clear_screen();
+        global_decks = load_user_decks(*user);
+        char fullname[MAX_AUTHOR_LENGTH];
+        get_fullname(*user, fullname);
+        strcpy(user->fullname,fullname);
+        /*clear_screen();*/
         print_green("Log-in successful.\n", 1);
         wait();
         return 1;
@@ -354,17 +413,7 @@ int create_new_account(deck_t deck, deck_t community_deck, user_t *user){
         clear_screen();
         print_yellow("Password (maximum 20 characters):\n> ", 0);
         scanf("%[^\n]", input_password);
-        if (strcmp(input_password, "") == 0) {
-            clear_screen();
-            print_yellow("Please enter at least one character.\n", 0);
-            wait();
-        }
-        else if(strlen(input_password) > MAX_PASSWORD_LENGTH){
-            clear_screen();
-            print_yellow("Too many characters, please try again.\n", 0);
-            wait();
-        }
-        else{
+        if (check_password_format(input_password)) {
             input_password[-1] = '\0';
             strcpy(user->password, input_password);
         }
@@ -377,5 +426,28 @@ int create_new_account(deck_t deck, deck_t community_deck, user_t *user){
     print_blue(user->fullname, 1);
     printf("\n");
     wait();
+    return 1;
+}
+
+int check_username_format(const char username[]){
+    return 0;
+}
+int check_password_format(const char password[]){
+    if (strcmp(password, "") == 0) {
+        clear_screen();
+        print_yellow("Please enter at least one character.\n", 0);
+        wait();
+        return 0;
+    }
+    else if(strlen(password) > MAX_PASSWORD_LENGTH){
+        clear_screen();
+        print_yellow("Too many characters, please try again.\n", 0);
+        wait();
+        return 0;
+    }
+    int i;
+    for(i = 0; i < MAX_PASSWORD_LENGTH; i++){
+
+    }
     return 1;
 }

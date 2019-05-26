@@ -463,6 +463,74 @@ deck_t load_community_decks(){
     return final_deck;
 }
 
+deck_t load_user_decks(user_t user){
+    deck_t final_deck = create_deck();
+    deck_t temp_deck = create_deck();
+    card_t final_card = create_card();
+    card_t temp_card = create_card();
+    FILE * filep;
+    filep = fopen(DB_DECKS, "r");
+    if(filep == NULL){
+        printf("Could not find Community Deck DB\n");
+        return NULL;
+    }
+    int eof = 1;
+    int reading_cards = 0;
+    int reading_deck = 0;
+    while(eof){
+        char temp_l[100] = {'\0'};
+        char temp_r[100] = {'\0'};
+        char *end;
+        eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+        if(!eof){
+            break;
+        }
+        if(!reading_cards){
+            if(!strcmp(temp_l, "name")){
+                strcpy(temp_deck->name,temp_r);
+            }else if(!strcmp(temp_l, "author")){
+                strcpy(temp_deck->author,temp_r);
+            }else if(!strcmp(temp_l, "owner") && !strcmp(temp_r, user.username)){
+                strcpy(temp_deck->owner,temp_r);
+                reading_deck = 1;
+            }else if(!strcmp(temp_l, "is_public")){
+                temp_deck->is_public = strtol(temp_r, &end, 10);
+            }else if(!strcmp(temp_l, "played")){
+                temp_deck->played = strtol(temp_r, &end, 10);
+            }else if(!strcmp(temp_l, "accuracy")){
+                temp_deck->accuracy = strtod(temp_r, &end);
+                reading_cards = 1;
+            }
+        }else{
+            if(!strcmp(temp_l, "end") && reading_deck == 1){
+                reading_cards = 0;
+                reading_deck = 0;
+                final_deck = add_deck(final_deck, 
+                    temp_deck->name, 
+                    temp_deck->author,
+                    temp_deck->owner,
+                    temp_deck->is_public, 
+                    temp_deck->played, 
+                    temp_deck->accuracy, 
+                    final_card);
+                temp_card = create_card();
+                final_card = create_card();
+                temp_deck = create_deck();
+            }else if(!strcmp(temp_l, "question") && reading_deck == 1){
+                strcpy(temp_card->question,temp_r);
+            }else if(!strcmp(temp_l, "answer") && reading_deck == 1){
+                strcpy(temp_card->answer,temp_r);
+                final_card = add_card(final_card, 
+                    temp_card->question, 
+                    temp_card->answer);
+                temp_card = create_card();
+            }
+        }
+    }
+    fclose(filep);
+    return final_deck;
+}
+
 /*******************************************************************************
  * Saves the in memory community deck to the community deck database
  * inputs:

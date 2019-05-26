@@ -81,7 +81,7 @@ int check_username(user_t user){
  * outputs:
  * - none
 *******************************************************************************/
-int check_password(user_t user){
+int check_password(user_t*user){
     FILE * filep;
     filep = fopen(DB_USERS, "r");
     if(filep == NULL){
@@ -96,9 +96,11 @@ int check_password(user_t user){
         if(!eof){
             break;
         }
-        if(!strcmp(temp_l, "username") && !strcmp(temp_r, user.username)){
+        if(!strcmp(temp_l, "username") && !strcmp(temp_r, user->username)){
             eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
-            if(!strcmp(temp_l, "password") && !strcmp(temp_r, user.password)){
+            if(!strcmp(temp_l, "password") && !strcmp(temp_r, user->password)){
+                eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+                strcpy(user->fullname, temp_r);
                 fclose(filep);
                 return 1;
             }

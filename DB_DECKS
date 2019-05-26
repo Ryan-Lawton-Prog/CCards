@@ -1,144 +1,62 @@
-name House of cards2
-author Bryan Lawton
-owner 
-is_public 0
+name Math
+author Ryan Lawton
+owner Lawyer
+is_public 1
 played 0
 accuracy 0.000000
-question does 1 + 1 = 1?
-answer no
-question does 1 + 1 = 2?
-answer yes
+question 1+1?
+answer 2
+question 2+1?
+answer 3
 end deck
-name Ryan's Deck
-author 
-owner 
-is_public 0
+name Math
+author Ryan Lawton
+owner Lawyer
+is_public 1
 played 0
 accuracy 0.000000
-question Does this have color?no
-answer no
+question 1+1?
+answer 2
+question 2+1?
+answer 3
 end deck
-name Test
-author 
-owner 
-is_public 0
+name Math
+author Ryan Lawton
+owner Lawyer
+is_public 1
 played 0
 accuracy 0.000000
-question Is this a question?
-answer yes
+question 1+1?
+answer 2
+question 2+1?
+answer 3
 end deck
 name test
-author 
-owner 
-is_public 0
-played 0
-accuracy 0.000000
-question test
-answer test
-end deck
-name se of cards?
-author 
-owner 
-is_public 0
-played 0
-accuracy 0.000000
-question Who is the main charaKevin Spacy
-answer Kevin Spacy
-end deck
-name House of cards
 author Ryan Lawton
-owner 
-is_public 0
+owner Lawyer
+is_public 1
 played 0
 accuracy 0.000000
-question does 1 + 1 = 1?
-answer no
-question does 1 + 1 = 2?
-answer yes
+question 1
+answer 1
 end deck
-name House of cards2
-author Bryan Lawton
-owner 
-is_public 0
-played 0
-accuracy 0.000000
-question does 1 + 1 = 1?
-answer no
-question does 1 + 1 = 2?
-answer yes
-end deck
-name House of cards
+name test3
 author Ryan Lawton
-owner 
-is_public 0
+owner Lawyer
+is_public 1
 played 0
 accuracy 0.000000
-question does 1 + 1 = 1?
-answer no
-question does 1 + 1 = 2?
-answer yes
+question 1
+answer 1
 end deck
-name House of cards
+name test
 author Ryan Lawton
-owner 
+owner Lawyer
 is_public 0
 played 0
 accuracy 0.000000
-question does 1 + 1 = 1?
-answer no
-question does 1 + 1 = 2?
-answer yes
-end deck
-name House of cards
-author Ryan Lawton
-owner 
-is_public 0
-played 0
-accuracy 0.000000
-question does 1 + 1 = 1?
-answer no
-question does 1 + 1 = 2?
-answer yes
-end deck
-name House of cards2
-author Bryan Lawton
-owner 
-is_public 0
-played 0
-accuracy 0.000000
-question does 1 + 1 = 1?
-answer no
-question does 1 + 1 = 2?
-answer yes
-end deck
-name Ryan's Deck
-author question Does this ha
-owner 
-is_public 0
-played 0
-accuracy 0.000000
-question 
-answer no
-end deck
-name House of cards2
-author Bryan Lawton
-owner 
-is_public 0
-played 0
-accuracy 0.000000
-question does 1 + 1 = 1?
-answer no
-question does 1 + 1 = 2?
-answer yes
-end deck
-name House of cards2
-author Bryan Lawton
-owner 
-is_public 0
-played 0
-accuracy 0.000000
-question does 1 + 1 = 1?
-answer no
-question does 1 + 1 = 2?
-answer yes
+question 1+1?
+answer 2
+question 2+1?
+answer 3
 end deck

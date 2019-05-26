@@ -198,6 +198,74 @@ void print_community_cards(deck_t deck, int show_answer){
     printf("Show question answers\n> ");
 }
 
+void print_user_deck(deck_t deck){
+    print_yellow("Title: ",0);
+    printf("%s\n", deck->name);
+    print_yellow("Author: ",0);
+    printf("%s\n\n", deck->author);
+}
+
+void print_user_decks(deck_t decks){
+    clear_screen();
+    deck_t temp = decks;
+    int i;
+    printf("%d", get_deck_size(decks));
+    for(i = 0; i < get_deck_size(decks); i++){
+        if(i > 0){
+            temp = temp->next;
+        }
+        print_user_deck(temp);
+    }
+    print_yellow("Enter the '", 0);
+    print_green("Title", 0);
+    print_yellow("' of the deck to view or type '", 0);
+    print_green("exit", 0);
+    print_yellow("' to go back to the Main Menu\n> ", 0);
+}
+
+void print_user_card(card_t card, int show_answer){
+    print_yellow("Question: ",0);
+    printf("%s\n", card->question);
+    if(show_answer){
+        print_yellow("Answer: ",0);
+        printf("%s\n", card->answer);
+    }
+    printf("\n");
+}
+
+void print_user_cards(deck_t deck, int show_answer){
+    clear_screen();
+    card_t temp = deck->cards;
+    int i;
+    print_user_deck(deck);
+    for(i = 0; i < get_size(deck->cards); i++){
+        if(i > 0){
+            temp = temp->next;
+        }
+        print_user_card(temp, show_answer);
+    }
+    print_yellow("Would you like to:\n", 1);
+    print_yellow("0: ", 0);
+    printf("Exit to menu\n");
+    print_yellow("1: ", 0);
+    printf("Show question answers\n> ");
+}
+
+void print_deck_menu(deck_t deck){
+    clear_screen();
+    print_yellow("Would you like to:\n", 1);
+    print_yellow("0: ", 0);
+    printf("Exit to menu\n");
+    print_yellow("1: ", 0);
+    printf("Play this deck\n");
+    print_yellow("2: ", 0);
+    printf("View this deck\n");
+    print_yellow("3: ", 0);
+    printf("Edit this deck\n");
+    print_yellow("4: ", 0);
+    printf("Delete this deck\n> ");
+}
+
 /*******************************************************************************
  * Used to pause and wait for any generic user input
  * inputs:

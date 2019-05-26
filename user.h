@@ -1,7 +1,7 @@
 #ifndef USER_H
 #define USER_H
 
-#include "deck.h"
+#include "cards.h"
 
 #define MAX_NAME_LENGTH 40
 #define MAX_CARD_ANSWER_LENGTH 100
@@ -25,7 +25,7 @@ user_t create_user();
 user_t update_user(user_t, const char[], const char[], const char[]);
 void get_fullname(user_t, char[]);
 int check_username(user_t);
-int check_password(user_t);
+int check_password(user_t*);
 user_t set_fullname(user_t, const char[]);
 user_t set_username(user_t, const char[]);
 user_t set_password(user_t, const char[]);

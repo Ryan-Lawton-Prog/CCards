@@ -1,12 +1,94 @@
-name House of cards2
-author Bryan Lawton
-question does 1 + 1 = 1?
-answer no
-question does 1 + 1 = 2?
-answer yes
+name Math
+author Ryan Lawton
+question 1+1?
+answer 2
+question 2+1?
+answer 3
 end deck
-name Ryan's Deck
-author 
-question Does this have color?no
-answer no
+name Math
+author Ryan Lawton
+question 1+1?
+answer 2
+question 2+1?
+answer 3
+end deck
+name Math
+author Ryan Lawton
+question 1+1?
+answer 2
+question 2+1?
+answer 3
+end deck
+name Math
+author Ryan Lawton
+question 1+1?
+answer 2
+question 2+1?
+answer 3
+end deck
+name Math
+author Ryan Lawton
+question 1+1?
+answer 2
+question 2+1?
+answer 3
+end deck
+name Math
+author Ryan Lawton
+question 1+1?
+answer 2
+question 2+1?
+answer 3
+end deck
+name Math
+author Ryan Lawton
+question 1+1?
+answer 2
+question 2+1?
+answer 3
+end deck
+name Math
+author Ryan Lawton
+question 1+1?
+answer 2
+question 2+1?
+answer 3
+end deck
+name Math
+author Ryan Lawton
+question 1+1?
+answer 2
+question 2+1?
+answer 3
+end deck
+name Math
+author Ryan Lawton
+question 1+1?
+answer 2
+question 2+1?
+answer 3
+end deck
+name Math
+author Ryan Lawton
+question 1+1?
+answer 2
+question 2+1?
+answer 3
+end deck
+name Math
+author Ryan Lawton
+question 1+1?
+answer 2
+question 2+1?
+answer 3
+end deck
+name test
+author Ryan Lawton
+question 1
+answer 1
+end deck
+name test3
+author Ryan Lawton
+question 1
+answer 1
 end deck

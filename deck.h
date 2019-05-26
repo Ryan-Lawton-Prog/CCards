@@ -2,6 +2,7 @@
 #define DECK_H
 
 #include "cards.h"
+#include "user.h"
 
 #define MAX_DECK_NAME_LENGTH 50
 #define MAX_AUTHOR_LENGTH 20
@@ -55,6 +56,7 @@ deck_t get_next_deck(deck_t);
 void update_deck_db(deck_t);
 deck_t get_last_deck(deck_t);
 deck_t load_community_decks();
+deck_t load_user_decks(user_t);
 void save_community_decks(deck_t);
 int check_deck_exists(const char[]);
 
