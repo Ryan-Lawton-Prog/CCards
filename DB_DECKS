@@ -45,10 +45,10 @@ name Math
 author Ryan Lawton
 owner Ryan1777
 is_public 0
-played 0
-accuracy 0.000000
-question 1+1
-answer 2
+played 1
+accuracy 1.000000
+question 1 + 2?
+answer 3
 question 2+2
 answer 4
 question 5*6
