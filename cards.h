@@ -6,7 +6,7 @@
 #include <stdlib.h> /*fprintf, fscanf, sscanf*/
 #include <math.h>
 
-#define MAX_CARD_QUESTION_LENGTH 20
+#define MAX_CARD_QUESTION_LENGTH 200
 #define MAX_CARD_ANSWER_LENGTH 100
 
 /*******************************************************************************
@@ -28,10 +28,13 @@ card_t add_card(card_t, const char[], const char[]);
 void get_question(card_t, char[]);
 void get_answer(card_t, char[]);
 void set_card(card_t, const char[], const char[]);
+card_t get_card_at(card_t, int);
 void get_question_at(card_t, int, char[]);
 void get_answer_at(card_t, int, char[]);
 void set_card_at(card_t, int, const char[], const char[]);
 card_t get_next(card_t);
 int get_size(card_t);
+void remove_card_at(card_t, int, int);
+card_t copy_cards(card_t card);
 
 #endif

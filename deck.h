@@ -5,10 +5,11 @@
 #include "user.h"
 
 #define MAX_DECK_NAME_LENGTH 50
-#define MAX_AUTHOR_LENGTH 20
-#define MAX_OWNER_NAME_LENGTH 50
+#define MAX_AUTHOR_LENGTH 40
+#define MAX_OWNER_NAME_LENGTH 40
 #define DB_DECKS "DB_DECKS"
 #define DB_COMMUNITY_DECKS "DB_COMMUNITY_DECKS"
+#define DB_TEMP "DB_TEMP"
 
 /*******************************************************************************
  * deck struct - used as a linked list for storing each deck without having
@@ -51,6 +52,7 @@ void get_owner_at(deck_t, int, char[]);
 void set_owner(deck_t, const char[]);
 void update_stats(deck_t, int);
 void update_stats_at(deck_t, int, int);
+void edit_deck_db(deck_t, const char[]);
 int get_deck_size(deck_t);
 deck_t get_next_deck(deck_t);
 void update_deck_db(deck_t);

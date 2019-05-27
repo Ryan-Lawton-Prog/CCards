@@ -383,6 +383,61 @@ void update_deck_db(deck_t n){
     fclose(filep);
 }
 
+
+/*******************************************************************************
+ * Edits a decks variables
+ * inputs:
+ * - deck_t
+ * outputs:
+ * - None
+*******************************************************************************/
+void edit_deck_db(deck_t n, const char name[]){
+    deck_t current_deck = n;
+    card_t current_card = n->cards;
+    FILE * filep;
+    FILE * tempp;
+    filep = fopen(DB_DECKS, "r");
+    tempp = fopen(DB_TEMP, "w");
+    int eof = 1;
+    while(eof){
+        char temp_l[100] = {'\0'};
+        char temp_r[100] = {'\0'};
+        eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+        if(!eof){
+            break;
+        }
+        if(!strcmp(temp_l, "name") && !strcmp(temp_r, name)){
+            fprintf(tempp, "%s %s\n", "name", current_deck->name);
+            eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+            fprintf(tempp, "%s %s\n", "author", current_deck->author);
+            eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+            fprintf(tempp, "%s %s\n", "owner", current_deck->owner);
+            eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+            fprintf(tempp, "%s %d\n", "is_public", current_deck->is_public);
+            eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+            fprintf(tempp, "%s %d\n", "played", current_deck->played);
+            eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+            fprintf(tempp, "%s %lf\n", "accuracy", current_deck->accuracy);
+            int i;
+            for(i = 0; i < get_size(current_deck->cards); i++){
+                eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+                fprintf(tempp, "%s %s\n", "question", current_card->question);
+                eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+                fprintf(tempp, "%s %s\n", "answer", current_card->answer);
+                current_card = current_card->next;
+            }
+            eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+            fprintf(tempp, "%s %s\n", "end", "deck");
+        }else{
+            fprintf(tempp, "%s %s\n", temp_l, temp_r);
+        }
+    }
+    fclose(tempp);
+    fclose(filep);
+    remove(DB_DECKS);
+    rename(DB_TEMP, DB_DECKS);
+}
+
 /*******************************************************************************
  * Gets the last deck of a deck list
  * inputs:
@@ -471,7 +526,7 @@ deck_t load_user_decks(user_t user){
     FILE * filep;
     filep = fopen(DB_DECKS, "r");
     if(filep == NULL){
-        printf("Could not find Community Deck DB\n");
+        printf("Could not find Deck DB\n");
         return NULL;
     }
     int eof = 1;
@@ -499,10 +554,12 @@ deck_t load_user_decks(user_t user){
                 temp_deck->played = strtol(temp_r, &end, 10);
             }else if(!strcmp(temp_l, "accuracy")){
                 temp_deck->accuracy = strtod(temp_r, &end);
-                reading_cards = 1;
+                if(reading_deck){
+                    reading_cards = 1;
+                }
             }
         }else{
-            if(!strcmp(temp_l, "end") && reading_deck == 1){
+            if(!strcmp(temp_l, "end")){
                 reading_cards = 0;
                 reading_deck = 0;
                 final_deck = add_deck(final_deck, 
@@ -516,9 +573,9 @@ deck_t load_user_decks(user_t user){
                 temp_card = create_card();
                 final_card = create_card();
                 temp_deck = create_deck();
-            }else if(!strcmp(temp_l, "question") && reading_deck == 1){
+            }else if(!strcmp(temp_l, "question")){
                 strcpy(temp_card->question,temp_r);
-            }else if(!strcmp(temp_l, "answer") && reading_deck == 1){
+            }else if(!strcmp(temp_l, "answer")){
                 strcpy(temp_card->answer,temp_r);
                 final_card = add_card(final_card, 
                     temp_card->question, 

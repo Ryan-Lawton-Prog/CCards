@@ -26,7 +26,7 @@ deck_t global_community_decks;
 *******************************************************************************/
 
 void view_decks(deck_t, deck_t, user_t);
-void view_deck(deck_t, deck_t, user_t);
+void deck_menu(deck_t, deck_t, user_t);
 void create_a_deck(deck_t, deck_t, user_t);
 void view_community_decks(deck_t, deck_t, user_t);
 void view_community_deck(deck_t, deck_t, user_t);
@@ -36,6 +36,10 @@ int create_new_account(deck_t, deck_t, user_t*);
 int login_existing_account(deck_t, deck_t, user_t*);
 int check_username_format(const char[]);
 int check_password_format(const char[]);
+void play_deck(deck_t, user_t);
+void view_deck(deck_t, user_t);
+void delete_deck(deck_t, user_t);
+void edit_deck(deck_t, user_t);
 
 /*******************************************************************************
  * Main
@@ -72,6 +76,7 @@ int main(){
                     test_user_decks(global_decks);
                     break;
                 case 5:
+                    edit_deck_db(global_decks, global_decks->name);
                     break;
                 default:
                     print_red("Invalid choice\n", 1);
@@ -108,8 +113,8 @@ void view_decks(deck_t user_decks,deck_t community_decks, user_t user){
                 if(i>0){
                     temp = temp->next;
                 }
-                if (strcmp(input, temp->name) <= 1){
-                    view_deck(temp, user_decks, user);
+                if (strcmp(input, temp->name) < 1){
+                    deck_menu(temp, user_decks, user);
                     return; 
                 }
             }
@@ -117,33 +122,77 @@ void view_decks(deck_t user_decks,deck_t community_decks, user_t user){
     }
 }
 
-void view_deck(deck_t deck, deck_t decks, user_t user){
+void deck_menu(deck_t deck, deck_t user_decks, user_t user){
      int menu = 0;
+     while((getchar()) != '\n');
      while(menu !=-1){
-        print_deck_menu();
+        print_deck_menu(deck);
         scanf("%d",&menu);
         switch(menu){
             case 0: 
                 menu = -1; 
                 break; 
             case 1:
-                decks = add_deck(decks,deck->name, deck->author,
-                user.username,0,0,0,decks->cards); 
-                update_deck_db(get_last_deck(decks));
-                print_add_deck(); 
-                menu = -1; 
+                play_deck(deck, user);
                 break; 
             case 2: 
+                view_deck(deck, user);
                 break; 
             case 3: 
+                edit_deck(deck, user);
                 break; 
             case 4: 
+                delete_deck(deck, user);
                 break; 
             default:
                 printf("Invalid choice\n");
                 break; 
         }
     }
+}
+
+void play_deck(deck_t deck, user_t user){
+    card_t temp = copy_cards(deck->cards);
+    char answer[MAX_CARD_ANSWER_LENGTH+1];
+    int correct = 0;
+    while((getchar()) != '\n');
+    int i;
+    for(i = 0; i < get_size(deck->cards); i++){
+        int num = (rand() % (get_size(temp)));
+        print_card_question(get_card_at(temp, num));
+        scanf("%[^\n]", answer);
+        correct = correct + print_card_answer(get_card_at(temp, num), answer);
+        remove_card_at(temp, num, get_size(temp)-1);
+    }
+    print_correct(deck, correct);
+}
+
+void view_deck(deck_t deck, user_t user){
+    int menu = 0;
+    int show_answers = 0;
+    while(menu != -1){
+        print_user_cards(deck, show_answers);
+        scanf("%d",&menu);
+        switch(menu){
+            case 0:
+                menu = -1;
+                break;
+            case 1:
+                show_answers = 1;
+                break;
+            default:
+                print_red("Invalid choice\n", 1);
+                break;
+        }
+    }
+}
+
+void edit_deck(deck_t deck, user_t user){
+
+}
+
+void delete_deck(deck_t deck, user_t user){
+
 }
 
 /*******************************************************************************
@@ -155,41 +204,89 @@ void view_deck(deck_t deck, deck_t decks, user_t user){
 *******************************************************************************/
 void create_a_deck(deck_t decks, deck_t community_deck, user_t user){
     card_t cards = create_card();
-    char name[MAX_DECK_NAME_LENGTH];
-    char question[MAX_CARD_QUESTION_LENGTH];
-    char answer[MAX_CARD_ANSWER_LENGTH];
-    char user_input[MAX_INPUT_LENGTH];
+    char name[MAX_DECK_NAME_LENGTH+2];
+    char question[MAX_CARD_QUESTION_LENGTH+2];
+    char answer[MAX_CARD_ANSWER_LENGTH+2];
+    char user_input[MAX_INPUT_LENGTH+2];
     int is_public = 0;
-    int choice = 0;
-    clear_screen();
-    do{
+    int loop = 1;
+    while(loop){
+        clear_screen();
         while((getchar()) != '\n');
         print_yellow("What do you want to name your deck?\n> ",1);
         scanf("%[^\n]", name);
-    } while (name[0] == '\0');
+        if(strcmp(name, "") == 0) {
+            clear_screen();
+            print_yellow("Please enter at least one character.\n", 0);
+            wait();
+        }
+        else if(strlen(name) > MAX_NAME_LENGTH){
+            clear_screen();
+            print_yellow("Too many characters, please try again.\n", 0);
+            wait();
+        }
+        else{
+            name[-1] = '\0';
+            loop = 0;
+        }
+    }
 
-
-    while(choice != -1){
-        while((getchar()) != '\n');
-        print_yellow("Write your question card:\n> ",1);
-        scanf("%[^\n]", question);
-        while((getchar()) != '\n');
-        print_yellow("Write your answer card:\n> ",1);
-        scanf("%[^\n]", answer);
-
-        cards = add_card(cards, question, answer);
-
-        while(choice != -1){
+    loop = 1;
+    int question_or_answer = 0;
+    while(loop){
+        clear_screen();
+        if(!question_or_answer){
+            strcpy(question, "");
+            print_yellow("Write your question card:\n> ",1);
             while((getchar()) != '\n');
-            print_card_creation();
-            scanf("%[^\n]", user_input);
-            
-            if(strcmp(user_input, "no") == 0){
-                choice = -1;
-            } else if (strcmp(user_input, "yes") == 0){
-                break;
-            } else {
-                print_red("Invalid choice\n", 1);
+            scanf("%[^\n]", question);
+            if(strlen(question) == 0) {
+                clear_screen();
+                print_yellow("Please enter at least one character.\n", 0);
+                neutral_wait_pre();
+            }
+            else if(strlen(question) > MAX_CARD_QUESTION_LENGTH){
+                clear_screen();
+                print_yellow("Too many characters, please try again.\n", 0);
+                neutral_wait_pre();
+            }
+            else{
+                question[-1] = '\0';
+                question_or_answer = 1;
+            }
+        }else if(question_or_answer){
+            strcpy(answer, "");
+            print_yellow("Write your answer card:\n> ",1);
+            while((getchar()) != '\n');
+            scanf("%[^\n]", answer);
+            if(strlen(answer) == 0) {
+                clear_screen();
+                print_yellow("Please enter at least one character.\n", 0);
+                neutral_wait_pre();
+            }
+            else if(strlen(answer) > MAX_CARD_ANSWER_LENGTH){
+                clear_screen();
+                print_yellow("Too many characters, please try again.\n", 0);
+                neutral_wait_pre();
+            }
+            else{
+                answer[-1] = '\0';
+                cards = add_card(cards, question, answer);
+                while((getchar()) != '\n');
+                while(loop){
+                    print_card_creation();
+                    scanf("%[^\n]", user_input);
+                    if(strcmp(user_input, "no") == 0){
+                        question_or_answer = 0;
+                        loop = 0;
+                    } else if (strcmp(user_input, "yes") == 0){
+                        question_or_answer = 0;
+                        break;
+                    } else {
+                        print_red("Invalid choice\n", 1);
+                        neutral_wait_pre();
+                    }
+                }
             }
         }
     }
@@ -204,6 +301,7 @@ void create_a_deck(deck_t decks, deck_t community_deck, user_t user){
         } else {
             print_red("Invalid choice\n", 1);
             is_public = 0;
+            neutral_wait();
         }
     }
     
@@ -368,10 +466,11 @@ int create_new_account(deck_t deck, deck_t community_deck, user_t *user){
     /*Full name+*/
     while((getchar()) != '\n');
     while (strcmp(user->fullname, "") == 0) {
+        strcpy(input_fullname, "");
         clear_screen();
         print_yellow("Full name (maximum 40 characters):\n> ", 0);
         scanf("%[^\n]", input_fullname);
-        if (strcmp(input_fullname, "") == 0) {
+        if (strlen(input_fullname) == 0) {
             clear_screen();
             print_yellow("Please enter at least one character.\n", 0);
             wait();
@@ -389,10 +488,11 @@ int create_new_account(deck_t deck, deck_t community_deck, user_t *user){
     while((getchar()) != '\n');
     /* Username */
     while (strcmp(user->username, "") == 0) {
+        strcpy(input_username, "");
         clear_screen();
         print_yellow("Username (maximum 20 characters):\n> ", 0);
         scanf("%[^\n]", input_username);
-        if (strcmp(input_username, "") == 0) {
+        if (strlen(input_username) == 0) {
             clear_screen();
             print_yellow("Please enter at least one character.\n", 0);
             wait();
@@ -410,6 +510,7 @@ int create_new_account(deck_t deck, deck_t community_deck, user_t *user){
     while((getchar()) != '\n');
     /* Password */
     while (strcmp(user->password, "") == 0) {
+        strcpy(input_password, "");
         clear_screen();
         print_yellow("Password (maximum 20 characters):\n> ", 0);
         scanf("%[^\n]", input_password);
@@ -433,7 +534,7 @@ int check_username_format(const char username[]){
     return 0;
 }
 int check_password_format(const char password[]){
-    if (strcmp(password, "") == 0) {
+    if (strlen(password) == 0) {
         clear_screen();
         print_yellow("Please enter at least one character.\n", 0);
         wait();

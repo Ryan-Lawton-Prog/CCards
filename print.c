@@ -209,7 +209,6 @@ void print_user_decks(deck_t decks){
     clear_screen();
     deck_t temp = decks;
     int i;
-    printf("%d", get_deck_size(decks));
     for(i = 0; i < get_deck_size(decks); i++){
         if(i > 0){
             temp = temp->next;
@@ -253,6 +252,12 @@ void print_user_cards(deck_t deck, int show_answer){
 
 void print_deck_menu(deck_t deck){
     clear_screen();
+
+    print_yellow("Title: ",0);
+    printf("%s\n", deck->name);
+    print_yellow("Author: ",0);
+    printf("%s\n\n", deck->author);
+
     print_yellow("Would you like to:\n", 1);
     print_yellow("0: ", 0);
     printf("Exit to menu\n");
@@ -264,6 +269,53 @@ void print_deck_menu(deck_t deck){
     printf("Edit this deck\n");
     print_yellow("4: ", 0);
     printf("Delete this deck\n> ");
+}
+
+void print_card_question(card_t card){
+    clear_screen();
+    print_yellow("Question: ",0);
+    printf("%s\n> ", card->question);
+}
+
+int print_card_answer(card_t card, const char answer[]){
+    if(!strcmp(answer, card->answer)){
+        print_green("CORRECT!!!\n", 1);
+        wait();
+        return 1;
+    }else{
+        print_red("Wrong :(\n", 0);
+        print_yellow("The correct answer is: ", 0);
+        print_green(card->answer, 1);
+        printf("\n");
+        wait();
+        return 0;
+    }
+}
+
+void print_correct(deck_t deck, int correct){
+    clear_screen();
+    char string[MAX_NAME_LENGTH];
+    print_yellow("Title: ",0);
+    printf("%s\n", deck->name);
+    print_yellow("Author: ",0);
+    printf("%s\n\n", deck->author);
+    print_yellow("You got '",0);
+    sprintf(string, "%d", correct);
+    print_green(string, 0);
+    print_yellow("' out of '", 0);
+    sprintf(string, "%d", get_size(deck->cards));
+    print_blue(string, 1);
+    print_yellow("'! Keep working at it :)\nYou have played this deck: ", 0);
+    sprintf(string, "%d", deck->played+1);
+    print_green(string, 0);
+    print_yellow(" times\n", 0);
+    print_yellow("Your current accuracy is: ", 0);
+    update_stats(deck, correct);
+    sprintf(string, "%f", deck->accuracy);
+    print_green(string, 0);
+    printf("\n");
+    edit_deck_db(deck, deck->name);
+    neutral_wait();
 }
 
 /*******************************************************************************
@@ -279,6 +331,34 @@ void wait(){
     while((getchar()) != '\n');
     scanf("%[^\n]", input);
     while((getchar()) != '\n');
+}
+
+/*******************************************************************************
+ * Used to pause and wait for any generic user input
+ * inputs:
+ * - None
+ * outputs:
+ * - None
+*******************************************************************************/
+void neutral_wait(){
+    char input[100];
+    printf("Enter any key\n");
+    scanf("%[^\n]", input);
+    while((getchar()) != '\n');
+}
+
+/*******************************************************************************
+ * Used to pause and wait for any generic user input
+ * inputs:
+ * - None
+ * outputs:
+ * - None
+*******************************************************************************/
+void neutral_wait_pre(){
+    char input[100];
+    printf("Enter any key\n");
+    while((getchar()) != '\n');
+    scanf("%[^\n]", input);
 }
 
 /*******************************************************************************

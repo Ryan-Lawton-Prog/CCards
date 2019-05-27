@@ -83,6 +83,27 @@ void set_card(card_t n, const char question[], const char answer[]){
  * outputs:
  * - none
 *******************************************************************************/
+card_t get_card_at(card_t n, int pos){
+    card_t temp;
+    temp = n;
+    int i;
+    for(i = 0; i < get_size(n); i++){
+        if(i == pos){
+            return temp;
+        }
+        temp = temp->next;
+    }
+    return temp;
+}
+
+/*******************************************************************************
+ * get question in position 'pos' from the
+ * sequence of cards from the top of the stack 'n'
+ * inputs:
+ * - card_t, int, string (question)
+ * outputs:
+ * - none
+*******************************************************************************/
 void get_question_at(card_t n, int pos, char question[]){
     card_t temp;
     temp = n;
@@ -164,4 +185,35 @@ int get_size(card_t n){
         return 1;
     }
     return get_size(n->next) + 1;
+}
+
+void remove_card_at(card_t n, int pos, int max){
+    card_t temp;
+    temp = n;
+    int i;
+    for(i = 0; i < get_size(n); i++){
+        if(i+1 == pos){
+            if(pos == max){
+                temp->next = NULL;
+                return;
+            }
+            card_t next = temp->next;
+            temp->next = next->next;
+            return;
+        }
+        temp = temp->next;
+    }
+}
+
+card_t copy_cards(card_t card){
+    card_t final = create_card();
+    card_t temp = card;
+    int i;
+    for(i = 0; i < get_size(card); i++){
+        if(i > 0){
+            temp = temp->next;
+        }
+        final = add_card(final, temp->question, temp->answer);
+    }
+    return final;
 }
