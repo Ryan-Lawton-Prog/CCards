@@ -391,7 +391,7 @@ void update_deck_db(deck_t n){
  * outputs:
  * - None
 *******************************************************************************/
-void edit_deck_db(deck_t n, const char name[]){
+void edit_deck_db(deck_t n, const char name[], user_t user){
     deck_t current_deck = n;
     card_t current_card = n->cards;
     FILE * filep;
@@ -411,23 +411,27 @@ void edit_deck_db(deck_t n, const char name[]){
             eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
             fprintf(tempp, "%s %s\n", "author", current_deck->author);
             eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
-            fprintf(tempp, "%s %s\n", "owner", current_deck->owner);
-            eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
-            fprintf(tempp, "%s %d\n", "is_public", current_deck->is_public);
-            eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
-            fprintf(tempp, "%s %d\n", "played", current_deck->played);
-            eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
-            fprintf(tempp, "%s %lf\n", "accuracy", current_deck->accuracy);
-            int i;
-            for(i = 0; i < get_size(current_deck->cards); i++){
+            if(!strcmp(temp_l, "owner") && !strcmp(temp_r, user.username)){
+                fprintf(tempp, "%s %s\n", "owner", current_deck->owner);
                 eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
-                fprintf(tempp, "%s %s\n", "question", current_card->question);
+                fprintf(tempp, "%s %d\n", "is_public", current_deck->is_public);
                 eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
-                fprintf(tempp, "%s %s\n", "answer", current_card->answer);
-                current_card = current_card->next;
+                fprintf(tempp, "%s %d\n", "played", current_deck->played);
+                eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+                fprintf(tempp, "%s %lf\n", "accuracy", current_deck->accuracy);
+                int i;
+                for(i = 0; i < get_size(current_deck->cards); i++){
+                    eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+                    fprintf(tempp, "%s %s\n", "question", current_card->question);
+                    eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+                    fprintf(tempp, "%s %s\n", "answer", current_card->answer);
+                    current_card = current_card->next;
+                }
+                eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+                fprintf(tempp, "%s %s\n", "end", "deck");
+            }else{
+                fprintf(tempp, "%s %s\n", temp_l, temp_r);
             }
-            eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
-            fprintf(tempp, "%s %s\n", "end", "deck");
         }else{
             fprintf(tempp, "%s %s\n", temp_l, temp_r);
         }

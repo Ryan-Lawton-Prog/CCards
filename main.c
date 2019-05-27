@@ -38,8 +38,8 @@ int check_username_format(const char[]);
 int check_password_format(const char[]);
 void play_deck(deck_t, user_t);
 void view_deck(deck_t, user_t);
+void edit_deck(deck_t, user_t, int);
 void delete_deck(deck_t, user_t);
-void edit_deck(deck_t, user_t);
 
 /*******************************************************************************
  * Main
@@ -54,7 +54,7 @@ int main(){
         if(logged_in){
             print_menu();
             scanf("%d",&menu);
-            /* 0: Exit
+            /*  0: Exit
              *  1: View Decks
              *  2: Create Deck
              *  3: View Community Decks
@@ -71,12 +71,6 @@ int main(){
                     break;
                 case 3:
                     view_community_decks(global_community_decks, global_decks, user);
-                    break;
-                case 4:
-                    test_user_decks(global_decks);
-                    break;
-                case 5:
-                    edit_deck_db(global_decks, global_decks->name);
                     break;
                 default:
                     print_red("Invalid choice\n", 1);
@@ -128,6 +122,11 @@ void deck_menu(deck_t deck, deck_t user_decks, user_t user){
      while(menu !=-1){
         print_deck_menu(deck);
         scanf("%d",&menu);
+        /*  0: Exit
+         *  1: Play Deck
+         *  2: View Deck
+         *  3: Delete Deck
+         */
         switch(menu){
             case 0: 
                 menu = -1; 
@@ -139,9 +138,6 @@ void deck_menu(deck_t deck, deck_t user_decks, user_t user){
                 view_deck(deck, user);
                 break; 
             case 3: 
-                edit_deck(deck, user);
-                break; 
-            case 4: 
                 delete_deck(deck, user);
                 break; 
             default:
@@ -164,31 +160,93 @@ void play_deck(deck_t deck, user_t user){
         correct = correct + print_card_answer(get_card_at(temp, num), answer);
         remove_card_at(temp, num, get_size(temp)-1);
     }
-    print_correct(deck, correct);
+    print_correct(deck, correct, user);
 }
 
 void view_deck(deck_t deck, user_t user){
     int menu = 0;
-    int show_answers = 0;
     while(menu != -1){
-        print_user_cards(deck, show_answers);
+        print_user_cards(deck);
         scanf("%d",&menu);
         switch(menu){
             case 0:
                 menu = -1;
                 break;
-            case 1:
-                show_answers = 1;
-                break;
             default:
+                if(menu > 0 && menu <= get_deck_size(deck)){
+                    edit_deck(deck, user, menu);
+                    break;
+                }
                 print_red("Invalid choice\n", 1);
                 break;
         }
     }
 }
 
-void edit_deck(deck_t deck, user_t user){
-
+void edit_deck(deck_t deck, user_t user, int pos){
+    char input[MAX_INPUT_LENGTH];
+    char question[MAX_CARD_QUESTION_LENGTH+2];
+    char answer[MAX_CARD_ANSWER_LENGTH+2];
+    while(1){
+        print_edit_deck(deck, pos);
+        while((getchar()) != '\n');
+        scanf("%[^\n]", input);
+        if(!strcmp(input, "exit")){
+            break;
+        }else if(!strcmp(input, "Question")){
+            while((getchar()) != '\n');
+            while(1){
+                clear_screen();
+                strcpy(question, "");
+                print_yellow("Question: ",0);
+                printf("%s\n", get_card_at(deck->cards, pos-1)->question);
+                print_yellow("Write your question card:\n> ",1);
+                scanf("%[^\n]", question);
+                if(strlen(question) == 0) {
+                    clear_screen();
+                    print_yellow("Please enter at least one character.\n", 0);
+                    neutral_wait();
+                }
+                else if(strlen(question) > MAX_CARD_QUESTION_LENGTH){
+                    clear_screen();
+                    print_yellow("Too many characters, please try again.\n", 0);
+                    neutral_wait();
+                }
+                else{
+                    question[-1] = '\0';
+                    strcpy(get_card_at(deck->cards, pos-1)->question, question);
+                    edit_deck_db(deck, deck->name, user);
+                    break;
+                }
+            }
+        }else if(!strcmp(input, "Answer")){
+            while((getchar()) != '\n');
+            while(1){
+                clear_screen();
+                strcpy(answer, "");
+                print_yellow("Answer: ",0);
+                printf("%s\n", get_card_at(deck->cards, pos-1)->answer);
+                print_yellow("Write your answer card:\n> ",1);
+                scanf("%[^\n]", answer);
+                if(strlen(answer) == 0) {
+                    clear_screen();
+                    print_yellow("Please enter at least one character.\n", 0);
+                    neutral_wait();
+                }
+                else if(strlen(answer) > MAX_CARD_ANSWER_LENGTH){
+                    clear_screen();
+                    print_yellow("Too many characters, please try again.\n", 0);
+                    neutral_wait();
+                }
+                else{
+                    answer[-1] = '\0';
+                    strcpy(get_card_at(deck->cards, pos-1)->answer, answer);
+                    edit_deck_db(deck, deck->name, user);
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void delete_deck(deck_t deck, user_t user){
@@ -492,17 +550,7 @@ int create_new_account(deck_t deck, deck_t community_deck, user_t *user){
         clear_screen();
         print_yellow("Username (maximum 20 characters):\n> ", 0);
         scanf("%[^\n]", input_username);
-        if (strlen(input_username) == 0) {
-            clear_screen();
-            print_yellow("Please enter at least one character.\n", 0);
-            wait();
-        }
-        else if(strlen(input_username) > MAX_USERNAME_LENGTH){
-            clear_screen();
-            print_yellow("Too many characters, please try again.\n", 0);
-            wait();
-        }
-        else{
+        if (check_username_format(input_username)) {
             input_username[-1] = '\0';
             strcpy(user->username, input_username);
         }
@@ -531,9 +579,43 @@ int create_new_account(deck_t deck, deck_t community_deck, user_t *user){
 }
 
 int check_username_format(const char username[]){
-    return 0;
+    user_t temp;
+    strcpy(temp.username, username);
+    if (strlen(username) == 0) {
+        clear_screen();
+        print_yellow("Please enter at least one character.\n", 0);
+        wait();
+        return 0;
+    }
+    else if(strlen(username) > MAX_USERNAME_LENGTH){
+        clear_screen();
+        print_yellow("Too many characters, please try again.\n", 0);
+        wait();
+        return 0;
+    }else if(check_username(temp)){
+        clear_screen();
+        print_yellow("This username is already in use.\n", 0);
+        wait();
+        return 0;
+    }
+    int i;
+    for(i = 0; i < strlen(username); i++){
+        if((username[i] >= 'a' && username[i] <= 'z') ||
+            (username[i] >= 'A' && username[i] <= 'Z') ||
+            (username[i] >= '0' && username[i] <= '9')){
+        }else{
+            clear_screen();
+            print_yellow("You can only use alphanumeric characters in your username.\n", 0);
+            wait();
+            return 0;
+        }
+    }
+    return 1;
 }
 int check_password_format(const char password[]){
+    int cont_lowercase = 0;
+    int cont_uppercase = 0;
+    int cont_number = 0;
     if (strlen(password) == 0) {
         clear_screen();
         print_yellow("Please enter at least one character.\n", 0);
@@ -547,8 +629,25 @@ int check_password_format(const char password[]){
         return 0;
     }
     int i;
-    for(i = 0; i < MAX_PASSWORD_LENGTH; i++){
-
+    for(i = 0; i < strlen(password); i++){
+        if((password[i] >= 'a' && password[i] <= 'z')){
+            cont_lowercase = 1;
+        }else if((password[i] >= 'A' && password[i] <= 'Z')){
+            cont_uppercase = 1;
+        }else if((password[i] >= '0' && password[i] <= '9')){
+            cont_number = 1;
+        }else{
+            clear_screen();
+            print_yellow("You can only use alphanumeric characters in your password.\n", 0);
+            wait();
+            return 0;
+        }
     }
-    return 1;
+    if(cont_lowercase && cont_uppercase && cont_number){
+        return 1;
+    }
+    clear_screen();
+    print_yellow("Your password needs a lowercase character, an uppercase character and a number.\n", 0);
+    wait();
+    return 0;
 }

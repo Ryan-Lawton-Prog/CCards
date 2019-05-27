@@ -20,8 +20,8 @@ void print_community_cards(deck_t,  int);
 void print_community_card(card_t, int);
 void print_user_deck(deck_t);
 void print_user_decks(deck_t);
-void print_user_cards(deck_t,int);
-void print_user_card(card_t, int); 
+void print_user_cards(deck_t);
+void print_user_card(card_t); 
 void print_deck_menu(deck_t);
 void wait();
 void neutral_wait();
@@ -33,6 +33,7 @@ void print_add_deck();
 void print_existing_account(user_t*);
 void print_card_question(card_t);
 int print_card_answer(card_t, const char[]);
-void print_correct(deck_t, int);
+void print_correct(deck_t, int, user_t);
+void print_edit_deck(deck_t, int);
 
 #endif

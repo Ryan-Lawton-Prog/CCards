@@ -202,7 +202,11 @@ void print_user_deck(deck_t deck){
     print_yellow("Title: ",0);
     printf("%s\n", deck->name);
     print_yellow("Author: ",0);
-    printf("%s\n\n", deck->author);
+    printf("%s\n", deck->author);
+    print_yellow("Times Played: ",0);
+    printf("%d\n", deck->played);
+    print_yellow("Accuracy: ",0);
+    printf("%f\n\n", deck->accuracy);
 }
 
 void print_user_decks(deck_t decks){
@@ -222,32 +226,35 @@ void print_user_decks(deck_t decks){
     print_yellow("' to go back to the Main Menu\n> ", 0);
 }
 
-void print_user_card(card_t card, int show_answer){
+void print_user_card(card_t card){
     print_yellow("Question: ",0);
     printf("%s\n", card->question);
-    if(show_answer){
-        print_yellow("Answer: ",0);
-        printf("%s\n", card->answer);
-    }
+    print_yellow("Answer: ",0);
+    printf("%s\n", card->answer);
     printf("\n");
 }
 
-void print_user_cards(deck_t deck, int show_answer){
+void print_user_cards(deck_t deck){
     clear_screen();
     card_t temp = deck->cards;
     int i;
+    char string[MAX_NAME_LENGTH];
     print_user_deck(deck);
     for(i = 0; i < get_size(deck->cards); i++){
         if(i > 0){
             temp = temp->next;
         }
-        print_user_card(temp, show_answer);
+        print_yellow("Card ", 1);
+        sprintf(string, "%d", i+1);
+        print_yellow(string, 1);
+        printf("\n");
+        print_user_card(temp);
     }
     print_yellow("Would you like to:\n", 1);
     print_yellow("0: ", 0);
     printf("Exit to menu\n");
-    print_yellow("1: ", 0);
-    printf("Show question answers\n> ");
+    print_yellow("NUM: ", 0);
+    printf("Edit a question\n> ");
 }
 
 void print_deck_menu(deck_t deck){
@@ -256,7 +263,11 @@ void print_deck_menu(deck_t deck){
     print_yellow("Title: ",0);
     printf("%s\n", deck->name);
     print_yellow("Author: ",0);
-    printf("%s\n\n", deck->author);
+    printf("%s\n", deck->author);
+    print_yellow("Times Played: ",0);
+    printf("%d\n", deck->played);
+    print_yellow("Accuracy: ",0);
+    printf("%f\n\n", deck->accuracy);
 
     print_yellow("Would you like to:\n", 1);
     print_yellow("0: ", 0);
@@ -264,10 +275,8 @@ void print_deck_menu(deck_t deck){
     print_yellow("1: ", 0);
     printf("Play this deck\n");
     print_yellow("2: ", 0);
-    printf("View this deck\n");
-    print_yellow("3: ", 0);
     printf("Edit this deck\n");
-    print_yellow("4: ", 0);
+    print_yellow("3: ", 0);
     printf("Delete this deck\n> ");
 }
 
@@ -292,7 +301,7 @@ int print_card_answer(card_t card, const char answer[]){
     }
 }
 
-void print_correct(deck_t deck, int correct){
+void print_correct(deck_t deck, int correct, user_t user){
     clear_screen();
     char string[MAX_NAME_LENGTH];
     print_yellow("Title: ",0);
@@ -314,7 +323,7 @@ void print_correct(deck_t deck, int correct){
     sprintf(string, "%f", deck->accuracy);
     print_green(string, 0);
     printf("\n");
-    edit_deck_db(deck, deck->name);
+    edit_deck_db(deck, deck->name, user);
     neutral_wait();
 }
 
@@ -432,4 +441,17 @@ void print_existing_account(user_t*user){
     print_yellow("Password: ", 0);
     while((getchar()) != '\n');
     scanf("%[^\n]", user->password);
+}
+
+void print_edit_deck(deck_t deck, int pos){
+    clear_screen();
+    print_user_card(get_card_at(deck->cards, pos-1));
+    print_yellow("Enter either '", 0);
+    print_green("Question", 0);
+    print_yellow("' or '", 0);
+    print_green("Answer", 0);
+    print_yellow("' or type '", 0);
+    print_green("exit", 0);
+    print_yellow("' to go back to the deck.\n", 0);
+    printf("> ");
 }
