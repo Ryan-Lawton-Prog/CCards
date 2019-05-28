@@ -48,17 +48,15 @@ char*decompress(char*string, int max){
     int pos = 0;
     for(i = 0; i < str_len; i++){
         int j;
-        printf("current: %s:%c\n", string, string[i]);
-        for(j = 0; j < atoi(&string[i+1]); j++){
+        char num[2];
+        num[0] = string[i+1];
+        int repeat = atoi(num);
+        for(j = 0; j < repeat; j++){
             final[pos+j] = string[i];
         }
         pos+=j;
         i++;
     }
-    printf("THIS WORKS");
     final[pos] = '\0';
-    printf("%s\n", final);
-    scanf("%d", &i);
-
     return final;
 }

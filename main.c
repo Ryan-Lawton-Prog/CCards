@@ -17,7 +17,7 @@
 
 #define MAX_USERNAME_LENGTH 20
 #define MAX_PASSWORD_LENGTH 20
-#define MAX_INPUT_LENGTH 100
+
 deck_t global_decks;
 deck_t global_community_decks;
 

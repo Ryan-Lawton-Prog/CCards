@@ -8,6 +8,7 @@
 
 #define MAX_CARD_QUESTION_LENGTH 200
 #define MAX_CARD_ANSWER_LENGTH 100
+#define MAX_INPUT_LENGTH 100
 
 /*******************************************************************************
  * card struct - used as a linked list for storing a list of cards for a deck

@@ -57,13 +57,14 @@ int check_username(user_t user){
     }
     int eof = 1;
     while(eof){
-        char temp_l[100] = {'\0'};
-        char temp_r[100] = {'\0'};
+        char temp_l[MAX_INPUT_LENGTH];
+        char temp_r[MAX_INPUT_LENGTH];
         eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+        decrypt(temp_r);
+        strcpy(temp_r, decompress(temp_r, MAX_USERNAME_LENGTH));
         if(!eof){
             break;
         }
-        decrypt(temp_r);
         if(!strcmp(temp_l, "username")){
             if(!strcmp(temp_r, user.username)){
                 fclose(filep);
@@ -91,19 +92,22 @@ int check_password(user_t*user){
     }
     int eof = 1;
     while(eof){
-        char temp_l[100] = {'\0'};
-        char temp_r[100] = {'\0'};
+        char temp_l[MAX_INPUT_LENGTH];
+        char temp_r[MAX_INPUT_LENGTH];
         eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
         if(!eof){
             break;
         }
         decrypt(temp_r);
+        strcpy(temp_r, decompress(temp_r, MAX_USERNAME_LENGTH));
         if(!strcmp(temp_l, "username") && !strcmp(temp_r, user->username)){
             eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
             decrypt(temp_r);
+            strcpy(temp_r, decompress(temp_r, MAX_PASSWORD_LENGTH));
             if(!strcmp(temp_l, "password") && !strcmp(temp_r, user->password)){
                 eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
                 decrypt(temp_r);
+                strcpy(temp_r, decompress(temp_r, MAX_NAME_LENGTH));
                 strcpy(user->fullname, temp_r);
                 fclose(filep);
                 return 1;
@@ -167,12 +171,15 @@ void update_user_db(user_t user){
     char username[MAX_USERNAME_LENGTH];
     char password[MAX_PASSWORD_LENGTH];
     char fullname[MAX_NAME_LENGTH];
-    strcpy(username, user.username);
-    strcpy(password, user.password);
-    strcpy(fullname, user.fullname);
+
+    strcpy(username, compress(user.username));
+    strcpy(password, compress(user.password));
+    strcpy(fullname, compress(user.fullname));
+
     encrypt(username);
     encrypt(password);
     encrypt(fullname);
+
     fprintf(filep, "%s %s\n", "username", username);
     fprintf(filep, "%s %s\n", "password", password);
     fprintf(filep, "%s %s\n", "fullname", fullname);
