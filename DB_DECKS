@@ -1,3 +1,18 @@
+name Math
+author Ryan Lawton
+owner Lawyer
+is_public 1
+played 9
+accuracy 0.777778
+question 1 - 2?
+answer -1
+question 2 + 3?
+answer 5
+question 5*6
+answer 30
+question 6/3
+answer 2
+end deck
 name C programming
 author Ryan Alexander Lawton
 owner Ryan1777

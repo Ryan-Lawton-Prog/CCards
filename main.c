@@ -40,17 +40,28 @@ void play_deck(deck_t, user_t);
 void view_deck(deck_t, user_t);
 void edit_deck(deck_t, user_t, int);
 void delete_deck(deck_t, user_t);
+int check_cmla(user_t*, int, char*[]);
 
 /*******************************************************************************
  * Main
 *******************************************************************************/
-int main(){
+int main(int argc, char *argv[]){
     int menu = 0;
-    int logged_in = 0; /*once loggin has been implemented set to 0*/
+    int logged_in = 0;
+    int debug = 0;
     global_decks = create_deck();
     global_community_decks = load_community_decks();
     user_t user = create_user();
+    int command = check_cmla(&user, argc, argv);
+    if(command == 1){
+        debug = 1;
+    }else if(command == 2){
+        logged_in = 1;
+    }
     while(menu != -1){
+        if(debug){
+            logged_in = 1;
+        }
         if(logged_in){
             print_menu();
             scanf("%d",&menu);
@@ -78,6 +89,37 @@ int main(){
             }
         }else{
             logged_in = login(global_decks, global_community_decks, &user);
+        }
+    }
+    return 0;
+}
+
+int check_cmla(user_t*user, int argc, char *argv[]){
+    if(argc > 1){
+        if(!strcmp(argv[1], "debug")){
+            return 1;
+        }else if(!strcmp(argv[1], "login")){
+            if(argc > 3){
+                strcpy(user->username,argv[2]);
+                strcpy(user->password,argv[3]);
+                if (check_password(user) == 0) {
+                    clear_screen();
+                    print_red("Invalid credentials!\n", 1);
+                    neutral_wait();
+                }
+                else {
+                    global_decks = load_user_decks(*user);
+                    char fullname[MAX_AUTHOR_LENGTH];
+                    get_fullname(*user, fullname);
+                    strcpy(user->fullname,fullname);
+                    /*clear_screen();*/
+                    print_green("Log-in successful.\n", 1);
+                    neutral_wait();
+                    return 1;
+                }
+                return 0;
+                return 2;
+            }
         }
     }
     return 0;
