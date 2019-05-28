@@ -1,7 +1,7 @@
 #ifndef USER_H
 #define USER_H
 
-#include "cards.h"
+#include "crypt.h"
 
 #define MAX_NAME_LENGTH 40
 #define MAX_USERNAME_LENGTH 20

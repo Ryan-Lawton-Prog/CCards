@@ -109,9 +109,6 @@ int check_cmla(user_t*user, int argc, char *argv[]){
                 }
                 else {
                     global_decks = load_user_decks(*user);
-                    char fullname[MAX_AUTHOR_LENGTH];
-                    get_fullname(*user, fullname);
-                    strcpy(user->fullname,fullname);
                     /*clear_screen();*/
                     print_green("Log-in successful.\n", 1);
                     neutral_wait();

@@ -63,6 +63,7 @@ int check_username(user_t user){
         if(!eof){
             break;
         }
+        decrypt(temp_r);
         if(!strcmp(temp_l, "username")){
             if(!strcmp(temp_r, user.username)){
                 fclose(filep);
@@ -96,10 +97,13 @@ int check_password(user_t*user){
         if(!eof){
             break;
         }
+        decrypt(temp_r);
         if(!strcmp(temp_l, "username") && !strcmp(temp_r, user->username)){
             eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+            decrypt(temp_r);
             if(!strcmp(temp_l, "password") && !strcmp(temp_r, user->password)){
                 eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+                decrypt(temp_r);
                 strcpy(user->fullname, temp_r);
                 fclose(filep);
                 return 1;
@@ -160,8 +164,17 @@ void update_user_db(user_t user){
         printf("Could not find Users DB\n");
         return;
     }
-    fprintf(filep, "%s %s\n", "username", user.username);
-    fprintf(filep, "%s %s\n", "password", user.password);
-    fprintf(filep, "%s %s\n", "fullname", user.fullname);
+    char username[MAX_USERNAME_LENGTH];
+    char password[MAX_PASSWORD_LENGTH];
+    char fullname[MAX_NAME_LENGTH];
+    strcpy(username, user.username);
+    strcpy(password, user.password);
+    strcpy(fullname, user.fullname);
+    encrypt(username);
+    encrypt(password);
+    encrypt(fullname);
+    fprintf(filep, "%s %s\n", "username", username);
+    fprintf(filep, "%s %s\n", "password", password);
+    fprintf(filep, "%s %s\n", "fullname", fullname);
     fclose(filep);
 }

@@ -3,6 +3,7 @@
 
 #include "cards.h"
 #include "user.h"
+#include "crypt.h"
 
 #define MAX_DECK_NAME_LENGTH 50
 #define MAX_AUTHOR_LENGTH 40
