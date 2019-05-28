@@ -139,6 +139,7 @@ void deck_menu(deck_t deck, deck_t user_decks, user_t user){
                 break; 
             case 3: 
                 delete_deck(deck, user);
+                menu = -1;
                 break; 
             default:
                 printf("Invalid choice\n");
@@ -250,7 +251,9 @@ void edit_deck(deck_t deck, user_t user, int pos){
 }
 
 void delete_deck(deck_t deck, user_t user){
-
+    delete_deck_db(deck, deck->name, user);
+    global_decks = load_user_decks(user);
+    print_delete_deck();
 }
 
 /*******************************************************************************
@@ -448,11 +451,11 @@ void view_community_deck(deck_t deck, deck_t decks, user_t user){
 }
 
 /*******************************************************************************
- * Menu's to let a user login. returns if it was successful or not
+ * Menu's to let a user login. returns an int if it was successful or not
  * inputs:
  * - deck_t, deck_t, user_t*
  * outputs:
- * - None
+ * - int
 *******************************************************************************/
 int login(deck_t decks, deck_t community_deck, user_t *user) {
 	int success = 0;

@@ -53,6 +53,7 @@ void set_owner(deck_t, const char[]);
 void update_stats(deck_t, int);
 void update_stats_at(deck_t, int, int);
 void edit_deck_db(deck_t, const char[], user_t);
+void delete_deck_db(deck_t, const char[], user_t);
 int get_deck_size(deck_t);
 deck_t get_next_deck(deck_t);
 void update_deck_db(deck_t);

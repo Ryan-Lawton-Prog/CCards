@@ -35,5 +35,6 @@ void print_card_question(card_t);
 int print_card_answer(card_t, const char[]);
 void print_correct(deck_t, int, user_t);
 void print_edit_deck(deck_t, int);
+void print_delete_deck();
 
 #endif

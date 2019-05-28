@@ -385,9 +385,9 @@ void update_deck_db(deck_t n){
 
 
 /*******************************************************************************
- * Edits a decks variables
+ * Edits a decks variables in db
  * inputs:
- * - deck_t
+ * - deck_t, string (name), user_t
  * outputs:
  * - None
 *******************************************************************************/
@@ -430,6 +430,57 @@ void edit_deck_db(deck_t n, const char name[], user_t user){
                 eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
                 fprintf(tempp, "%s %s\n", "end", "deck");
             }else{
+                fprintf(tempp, "%s %s\n", temp_l, temp_r);
+            }
+        }else{
+            fprintf(tempp, "%s %s\n", temp_l, temp_r);
+        }
+    }
+    fclose(tempp);
+    fclose(filep);
+    remove(DB_DECKS);
+    rename(DB_TEMP, DB_DECKS);
+}
+
+/*******************************************************************************
+ * Deletes a deck from the db
+ * inputs:
+ * - deck_t, string (name), user_t
+ * outputs:
+ * - None
+*******************************************************************************/
+void delete_deck_db(deck_t n, const char name[], user_t user){
+    deck_t current_deck = n;
+    card_t current_card = n->cards;
+    FILE * filep;
+    FILE * tempp;
+    filep = fopen(DB_DECKS, "r");
+    tempp = fopen(DB_TEMP, "w");
+    int eof = 1;
+    while(eof){
+        char temp_l[100] = {'\0'};
+        char temp_r[100] = {'\0'};
+        eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+        if(!eof){
+            break;
+        }
+        if(!strcmp(temp_l, "name") && !strcmp(temp_r, name)){
+            eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+            eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+            if(!strcmp(temp_l, "owner") && !strcmp(temp_r, user.username)){
+                eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+                eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+                eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+                int i;
+                for(i = 0; i < get_size(current_deck->cards); i++){
+                    eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+                    eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+                    current_card = current_card->next;
+                }
+                eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
+            }else{
+                fprintf(tempp, "%s %s\n", "name", current_deck->name);
+                fprintf(tempp, "%s %s\n", "author", current_deck->author);
                 fprintf(tempp, "%s %s\n", temp_l, temp_r);
             }
         }else{

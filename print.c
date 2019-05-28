@@ -455,3 +455,9 @@ void print_edit_deck(deck_t deck, int pos){
     print_yellow("' to go back to the deck.\n", 0);
     printf("> ");
 }
+
+void print_delete_deck(){
+    clear_screen();
+    print_green("Deck successfully deleted!\n", 1);
+    wait();
+}
