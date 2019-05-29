@@ -1,58 +1,13 @@
 name Math
-author Ryan Lawton
-owner Lawyer
-is_public 1
-played 10
-accuracy 0.800000
-question 1 - 2?
-answer -1
-question 2 + 3?
-answer 5
-question 5*6
-answer 30
-question 6/3
+author Alex
+owner alex
+is_public 0
+played 2
+accuracy 0.500000
+question 1 + 1?
 answer 2
-end deck
-name C programming
-author Ryan Alexander Lawton
-owner Ryan1777
-is_public 1
-played 0
-accuracy 0.000000
-question What type of if statement uses integers
-answer switch
-question Is this a valid statement? "string c;"
-answer no
-question Is this program made in C?
-answer yes
-question How do you write something to the console?
-answer printf
-end deck
-name Testing deck
-author Ryan Lawton
-owner Lawyer
-is_public 0
-played 1
-accuracy 0.000000
-question Is this a test?
-answer yes
-question Is this another test?
-answer yes
-question Is this also a test?
-answer yes
-end deck
-name Math
-author Ryan Lawton
-owner Ryan1777
-is_public 0
-played 1
-accuracy 1.000000
-question 1 + 2?
-answer 3
-question 2+2
+question 2 * 2?
 answer 4
-question 5*6
-answer 30
-question 6/3
+question 6 / 3?
 answer 2
 end deck

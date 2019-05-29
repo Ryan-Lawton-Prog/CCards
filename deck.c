@@ -600,7 +600,8 @@ deck_t load_user_decks(user_t user){
                 strcpy(temp_deck->name,temp_r);
             }else if(!strcmp(temp_l, "author")){
                 strcpy(temp_deck->author,temp_r);
-            }else if(!strcmp(temp_l, "owner") && !strcmp(temp_r, user.username)){
+            }else if(!strcmp(temp_l, "owner") &&
+             !strcmp(temp_r, user.username)){
                 strcpy(temp_deck->owner,temp_r);
                 reading_deck = 1;
             }else if(!strcmp(temp_l, "is_public")){

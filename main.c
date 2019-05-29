@@ -20,20 +20,21 @@
 
 deck_t global_decks;
 deck_t global_community_decks;
+int debug;
 
 /*******************************************************************************
  * Function prototypes
 *******************************************************************************/
 
-void view_decks(deck_t, deck_t, user_t);
-void deck_menu(deck_t, deck_t, user_t);
-void create_a_deck(deck_t, deck_t, user_t);
-void view_community_decks(deck_t, deck_t, user_t);
-void view_community_deck(deck_t, deck_t, user_t);
+void view_decks( user_t);
+void deck_menu(deck_t,user_t);
+void create_a_deck(user_t);
+void view_community_decks(user_t);
+void view_community_deck(deck_t,user_t);
 void view_user_stats();
-int login(deck_t, deck_t, user_t*);
-int create_new_account(deck_t, deck_t, user_t*);
-int login_existing_account(deck_t, deck_t, user_t*);
+int login(user_t*);
+int create_new_account(user_t*);
+int login_existing_account(user_t*);
 int check_username_format(const char[]);
 int check_password_format(const char[]);
 void play_deck(deck_t, user_t);
@@ -48,7 +49,7 @@ int check_cmla(user_t*, int, char*[]);
 int main(int argc, char *argv[]){
     int menu = 0;
     int logged_in = 0;
-    int debug = 0;
+    debug = 0;
     global_decks = create_deck();
     global_community_decks = load_community_decks();
     user_t user = create_user();
@@ -75,20 +76,20 @@ int main(int argc, char *argv[]){
                     menu = -1;
                     break;
                 case 1:
-                    view_decks(global_decks, global_community_decks, user);
+                    view_decks(user);
                     break;
                 case 2:
-                    create_a_deck(global_decks, global_community_decks, user);
+                    create_a_deck(user);
                     break;
                 case 3:
-                    view_community_decks(global_community_decks, global_decks, user);
+                    view_community_decks(user);
                     break;
                 default:
                     print_red("Invalid choice\n", 1);
                     break;
             }
         }else{
-            logged_in = login(global_decks, global_community_decks, &user);
+            logged_in = login(&user);
         }
     }
     return 0;
@@ -129,25 +130,25 @@ int check_cmla(user_t*user, int argc, char *argv[]){
  * outputs:
  * - None
 *******************************************************************************/
-void view_decks(deck_t user_decks,deck_t community_decks, user_t user){
+void view_decks(user_t user){
       while(1){
-        deck_t temp = user_decks;
+        deck_t temp = global_decks;
         char input[100];
         int i; 
-        print_user_decks(user_decks);
+        print_user_decks(global_decks);
         while((getchar()) != '\n');
         scanf("%[^\n]", input);
         if(!strcmp(input, "exit")){
             return;
         }else{
-            temp = user_decks; 
-            int size = get_deck_size(user_decks);
+            temp = global_decks; 
+            int size = get_deck_size(global_decks);
             for(i=0; i< size;i++){
                 if(i>0){
                     temp = temp->next;
                 }
                 if (strcmp(input, temp->name) < 1){
-                    deck_menu(temp, user_decks, user);
+                    deck_menu(temp, user);
                     return; 
                 }
             }
@@ -155,7 +156,7 @@ void view_decks(deck_t user_decks,deck_t community_decks, user_t user){
     }
 }
 
-void deck_menu(deck_t deck, deck_t user_decks, user_t user){
+void deck_menu(deck_t deck, user_t user){
      int menu = 0;
      while((getchar()) != '\n');
      while(menu !=-1){
@@ -302,7 +303,7 @@ void delete_deck(deck_t deck, user_t user){
  * outputs:
  * - None
 *******************************************************************************/
-void create_a_deck(deck_t decks, deck_t community_deck, user_t user){
+void create_a_deck(user_t user){
     card_t cards = create_card();
     char name[MAX_DECK_NAME_LENGTH+2];
     char question[MAX_CARD_QUESTION_LENGTH+2];
@@ -406,14 +407,14 @@ void create_a_deck(deck_t decks, deck_t community_deck, user_t user){
     }
     
     if(is_public == 1){
-        community_deck = add_deck(community_deck, name, user.fullname,
+        global_community_decks = add_deck(global_community_decks, name, user.fullname,
              "", is_public, 0, 0, cards);
-        save_community_decks(community_deck);
+        save_community_decks(global_community_decks);
     }
 
-    decks = add_deck(decks, name, user.fullname, user.username,
+    global_decks = add_deck(global_decks, name, user.fullname, user.username,
          is_public, 0, 0, cards);
-    update_deck_db(get_last_deck(decks));
+    update_deck_db(get_last_deck(global_decks));
 }
 
 
@@ -425,27 +426,27 @@ void create_a_deck(deck_t decks, deck_t community_deck, user_t user){
  * outputs:
  * - None
 *******************************************************************************/
-void view_community_decks(deck_t community_decks, deck_t decks, user_t user){
+void view_community_decks(user_t user){
     /*printing community decks*/
     while(1){
         clear_screen();
-        deck_t temp = community_decks;
-        char input[100];
+        deck_t temp = global_community_decks;
+        char input[MAX_INPUT_LENGTH];
         int i;
-        print_community_decks(community_decks);
+        print_community_decks(global_community_decks);
         while((getchar()) != '\n');
         scanf("%[^\n]", input);
         if(!strcmp(input, "exit")){
             return;
         }else{
-            temp = community_decks;
-            int size = get_deck_size(community_decks);
+            temp = global_community_decks;
+            int size = get_deck_size(global_community_decks);
             for(i = 0; i < size; i++){
                 if(i > 0){
                     temp = temp->next;
                 }
                 if(!strcmp(input, temp->name)){
-                    view_community_deck(temp, decks, user);
+                    view_community_deck(temp, user);
                     return;
                 }
             }
@@ -462,7 +463,7 @@ void view_community_decks(deck_t community_decks, deck_t decks, user_t user){
  * outputs:
  * - None
 *******************************************************************************/
-void view_community_deck(deck_t deck, deck_t decks, user_t user){
+void view_community_deck(deck_t deck, user_t user){
     int menu = 0;
     int show_answers = 0;
     while(menu != -1){
@@ -473,7 +474,7 @@ void view_community_deck(deck_t deck, deck_t decks, user_t user){
                 menu = -1;
                 break;
             case 1:
-                global_decks = add_deck(decks, deck->name, deck->author,
+                global_decks = add_deck(global_decks, deck->name, deck->author,
                     user.username, 0, 0, 0, deck->cards);
                 update_deck_db(get_last_deck(global_decks));
                 print_add_deck();
@@ -496,30 +497,27 @@ void view_community_deck(deck_t deck, deck_t decks, user_t user){
  * outputs:
  * - int
 *******************************************************************************/
-int login(deck_t decks, deck_t community_deck, user_t *user) {
+int login(user_t *user) {
 	int success = 0;
 	int login_menu_choice = 0;
 
-	fflush(stdin);
     while(success == 0){
         print_login_menu();
         scanf("%d", &login_menu_choice);
         printf("\n");
         switch(login_menu_choice) {
             case 1: /* Log in to existing account */
-                success = login_existing_account(decks, community_deck, user);
+                success = login_existing_account(user);
                 break;
             case 2: /*Create a new account.*/
-                success = create_new_account(decks, community_deck, user);
+                while((getchar()) != '\n');
+                success = create_new_account(user);
                 break;
             default:
                 print_red("Invalid choice\n", 1);
                 success = 0;
                 break;
         }
-
-        printf("\n");
-        fflush(stdin);
     }
 	return success;
 }
@@ -531,12 +529,13 @@ int login(deck_t decks, deck_t community_deck, user_t *user) {
  * outputs:
  * - None
 *******************************************************************************/
-int login_existing_account(deck_t decks, deck_t community_deck, user_t *user){
+int login_existing_account(user_t *user){
     print_existing_account(user);
     if (check_password(user) == 0) {
         clear_screen();
         print_red("Invalid credentials!\n", 1);
-        wait();
+        neutral_wait_pre();
+        return 0;   
     }
     else {
         global_decks = load_user_decks(*user);
@@ -558,14 +557,14 @@ int login_existing_account(deck_t decks, deck_t community_deck, user_t *user){
  * outputs:
  * - None
 *******************************************************************************/
-int create_new_account(deck_t deck, deck_t community_deck, user_t *user){
+int create_new_account(user_t *user){
     char input_fullname[MAX_NAME_LENGTH+2] = "";
     char input_username[MAX_USERNAME_LENGTH+2] = "";
     char input_password[MAX_PASSWORD_LENGTH+2] = "";
     print_yellow("Creating a new account!\nEnter details below.\n", 1);
     /*Full name+*/
-    while((getchar()) != '\n');
-    while (strcmp(user->fullname, "") == 0) {
+    int cont = 1;
+    while (cont) {
         strcpy(input_fullname, "");
         clear_screen();
         print_yellow("Full name (maximum 40 characters):\n> ", 0);
@@ -583,11 +582,13 @@ int create_new_account(deck_t deck, deck_t community_deck, user_t *user){
         else{
             input_fullname[-1] = '\0';
             strcpy(user->fullname, input_fullname);
+            cont = 0;
         }
     }
+    cont = 1;
     while((getchar()) != '\n');
     /* Username */
-    while (strcmp(user->username, "") == 0) {
+    while (cont) {
         strcpy(input_username, "");
         clear_screen();
         print_yellow("Username (maximum 20 characters):\n> ", 0);
@@ -595,18 +596,22 @@ int create_new_account(deck_t deck, deck_t community_deck, user_t *user){
         if (check_username_format(input_username)) {
             input_username[-1] = '\0';
             strcpy(user->username, input_username);
+            cont = 0;
         }
     }
+    cont = 1;
     while((getchar()) != '\n');
     /* Password */
-    while (strcmp(user->password, "") == 0) {
+    while (cont) {
         strcpy(input_password, "");
         clear_screen();
-        print_yellow("Password (maximum 20 characters):\n> ", 0);
+        print_yellow("Password (maximum of 20 alphanumeric characters)\n", 0);
+        print_yellow("Requires atleast one Number, Capital and lowercase letter\n> ", 0);
         scanf("%[^\n]", input_password);
         if (check_password_format(input_password)) {
             input_password[-1] = '\0';
             strcpy(user->password, input_password);
+            cont = 0;
         }
     }
     

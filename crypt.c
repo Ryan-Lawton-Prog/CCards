@@ -6,7 +6,6 @@ void encrypt(char string[]){
         string[i] = string[i]^KEY_Pos;
         
     }
-    scanf("%d", &i);
 }
 
 void decrypt(char string[]){
