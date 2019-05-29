@@ -659,6 +659,7 @@ int check_username_format(const char username[]){
     }
     return 1;
 }
+
 int check_password_format(const char password[]){
     int cont_lowercase = 0;
     int cont_uppercase = 0;
