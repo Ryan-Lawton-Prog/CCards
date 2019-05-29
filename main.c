@@ -26,7 +26,7 @@ int debug;
  * Function prototypes
 *******************************************************************************/
 
-void view_decks( user_t);
+void view_decks(user_t);
 void deck_menu(deck_t,user_t);
 void create_a_deck(user_t);
 void view_community_decks(user_t);
