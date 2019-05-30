@@ -136,6 +136,9 @@ void view_decks(user_t user){
         char input[100];
         int i; 
         print_user_decks(global_decks);
+        if(strlen(global_decks->name) == 0){
+            break;
+        }
         while((getchar()) != '\n');
         scanf("%[^\n]", input);
         if(!strcmp(input, "exit")){
@@ -147,7 +150,7 @@ void view_decks(user_t user){
                 if(i>0){
                     temp = temp->next;
                 }
-                if (strcmp(input, temp->name) < 1){
+                if (!strcmp(input, temp->name)){
                     deck_menu(temp, user);
                     return; 
                 }

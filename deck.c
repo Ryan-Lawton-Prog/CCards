@@ -300,34 +300,10 @@ void get_owner_at(deck_t n, int pos, char owner[]){
  * - none
 *******************************************************************************/
 void update_stats(deck_t n, int correct){
-    n->accuracy = ((n->accuracy * n->played) + 
-        (correct / get_size(n->cards))) / 
-        (n->played + 1);
+    n->accuracy = ((n->accuracy * (double) n->played) + 
+        ((double) correct / (double) get_size(n->cards))) / 
+        (double ) (n->played + 1);
     n->played++;
-}
-
-/*******************************************************************************
- * Updates the accuracy of a deck at position 'pos' from the
- * sequence of decks starting at the top of the stack 'n'
- * inputs:
- * - deck_t, int, int
- * outputs:
- * - none
-*******************************************************************************/
-void update_stats_at(deck_t n, int pos, int correct){
-    deck_t temp;
-    temp = n;
-    int i;
-    for(i = 0; i < get_deck_size(n); i++){
-        if(i == pos){
-            temp->accuracy = ((temp->accuracy * temp->played) + 
-                (correct / get_size(temp->cards))) / 
-                (temp->played + 1);
-            temp->played++;
-            return;
-        }
-        temp = temp->next;
-    }
 }
 
 /*******************************************************************************

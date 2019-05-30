@@ -213,17 +213,22 @@ void print_user_decks(deck_t decks){
     clear_screen();
     deck_t temp = decks;
     int i;
-    for(i = 0; i < get_deck_size(decks); i++){
-        if(i > 0){
-            temp = temp->next;
+    if(strlen(decks->name) > 0){
+        for(i = 0; i < get_deck_size(decks); i++){
+            if(i > 0){
+                temp = temp->next;
+            }
+            print_user_deck(temp);
         }
-        print_user_deck(temp);
+        print_yellow("Enter the '", 0);
+        print_green("Title", 0);
+        print_yellow("' of the deck to view or type '", 0);
+        print_green("exit", 0);
+        print_yellow("' to go back to the Main Menu\n> ", 0);
+    }else{
+        print_yellow("You have no decks to display!\n", 0);
+        neutral_wait_pre();
     }
-    print_yellow("Enter the '", 0);
-    print_green("Title", 0);
-    print_yellow("' of the deck to view or type '", 0);
-    print_green("exit", 0);
-    print_yellow("' to go back to the Main Menu\n> ", 0);
 }
 
 void print_user_card(card_t card){

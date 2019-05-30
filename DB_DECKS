@@ -1,13 +1,15 @@
 name Math
-author Alex
-owner alex
+author Ryan Lawton
+owner Lawyer
 is_public 0
 played 2
-accuracy 0.500000
-question 1 + 1?
+accuracy 0.750000
+question 1+1
 answer 2
-question 2 * 2?
+question 2+2
 answer 4
-question 6 / 3?
+question 5*6
+answer 30
+question 6/3
 answer 2
 end deck
