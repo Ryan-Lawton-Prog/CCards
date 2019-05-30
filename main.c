@@ -315,6 +315,7 @@ void create_a_deck(user_t user){
     int is_public = 0;
     int loop = 1;
     while(loop){
+        strcpy(name, "");
         clear_screen();
         while((getchar()) != '\n');
         print_yellow("What do you want to name your deck?\n> ",1);
@@ -322,12 +323,17 @@ void create_a_deck(user_t user){
         if(strcmp(name, "") == 0) {
             clear_screen();
             print_yellow("Please enter at least one character.\n", 0);
-            wait();
+            neutral_wait_pre();
         }
         else if(strlen(name) > MAX_NAME_LENGTH){
             clear_screen();
             print_yellow("Too many characters, please try again.\n", 0);
-            wait();
+            neutral_wait_pre();
+        }
+        else if(check_deck_exists(name)){
+            clear_screen();
+            print_yellow("This deck already exists, please choose a new name.\n", 0);
+            neutral_wait_pre();
         }
         else{
             name[-1] = '\0';
