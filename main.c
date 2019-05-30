@@ -15,9 +15,6 @@
 #include "user.h"
 #include "test.h"
 
-#define MAX_USERNAME_LENGTH 20
-#define MAX_PASSWORD_LENGTH 20
-
 deck_t global_decks;
 deck_t global_community_decks;
 int debug;
@@ -95,7 +92,15 @@ int main(int argc, char *argv[]){
     return 0;
 }
 
+/*******************************************************************************
+ * Checks command line arguments for relevant options
+ * inputs:
+ * - user_t*, int, char[]
+ * outputs:
+ * - int
+*******************************************************************************/
 int check_cmla(user_t*user, int argc, char *argv[]){
+    /*are their any arguments to begin with?*/
     if(argc > 1){
         if(!strcmp(argv[1], "debug")){
             return 1;
@@ -103,6 +108,7 @@ int check_cmla(user_t*user, int argc, char *argv[]){
             if(argc > 3){
                 strcpy(user->username,argv[2]);
                 strcpy(user->password,argv[3]);
+                /*checks if login credentials are correct or not*/
                 if (check_password(user) == 0) {
                     clear_screen();
                     print_red("Invalid credentials!\n", 1);
@@ -124,17 +130,19 @@ int check_cmla(user_t*user, int argc, char *argv[]){
 }
 
 /*******************************************************************************
- * 
+ * Views all of the users decks and provides deck options
  * inputs:
- * - None
+ * - user
  * outputs:
  * - None
 *******************************************************************************/
 void view_decks(user_t user){
-      while(1){
+    /*continue loop until break is hit*/
+    while(1){
         deck_t temp = global_decks;
         char input[100];
         int i; 
+        /*print menu*/
         print_user_decks(global_decks);
         if(strlen(global_decks->name) == 0){
             break;
@@ -146,6 +154,7 @@ void view_decks(user_t user){
         }else{
             temp = global_decks; 
             int size = get_deck_size(global_decks);
+            /*iterate over each deck in the linked list*/
             for(i=0; i< size;i++){
                 if(i>0){
                     temp = temp->next;
@@ -159,6 +168,14 @@ void view_decks(user_t user){
     }
 }
 
+/*******************************************************************************
+ * Provides the options you can do with a chosen deck
+ * I.E (Play, View or Delete)
+ * inputs:
+ * - deck_t, user_t
+ * outputs:
+ * - None
+*******************************************************************************/
 void deck_menu(deck_t deck, user_t user){
      int menu = 0;
      while((getchar()) != '\n');
@@ -191,25 +208,43 @@ void deck_menu(deck_t deck, user_t user){
     }
 }
 
+/*******************************************************************************
+ * Randomely chooses cards from a deck and promts the user to answer them
+ * inputs:
+ * - deck_t, user_t
+ * outputs:
+ * - None
+*******************************************************************************/
 void play_deck(deck_t deck, user_t user){
     card_t temp = copy_cards(deck->cards);
     char answer[MAX_CARD_ANSWER_LENGTH+1];
     int correct = 0;
     while((getchar()) != '\n');
     int i;
+    /*iterates over each card*/
     for(i = 0; i < get_size(deck->cards); i++){
+        /*picking randcom card in left over cards*/
         int num = (rand() % (get_size(temp)));
         print_card_question(get_card_at(temp, num));
         scanf("%[^\n]", answer);
         correct = correct + print_card_answer(get_card_at(temp, num), answer);
+        /*removing chosen card from play deck*/
         remove_card_at(temp, num, get_size(temp)-1);
     }
     print_correct(deck, correct, user);
 }
 
+/*******************************************************************************
+ * Views the cards in a deck and allows you to edit them
+ * inputs:
+ * - deck_t, user_t
+ * outputs:
+ * - None
+*******************************************************************************/
 void view_deck(deck_t deck, user_t user){
     int menu = 0;
     while(menu != -1){
+        /*prints each card with a corresponding choice number*/ 
         print_user_cards(deck);
         scanf("%d",&menu);
         switch(menu){
@@ -217,6 +252,7 @@ void view_deck(deck_t deck, user_t user){
                 menu = -1;
                 break;
             default:
+                /*based on number chooses selected card*/
                 if(menu > 0 && menu <= get_deck_size(deck)){
                     edit_deck(deck, user, menu);
                     break;
@@ -227,10 +263,18 @@ void view_deck(deck_t deck, user_t user){
     }
 }
 
+/*******************************************************************************
+ * Asks questions to change a chosen card in a decks text
+ * inputs:
+ * - deck_t, user_t, int
+ * outputs:
+ * - None
+*******************************************************************************/
 void edit_deck(deck_t deck, user_t user, int pos){
     char input[MAX_INPUT_LENGTH];
     char question[MAX_CARD_QUESTION_LENGTH+2];
     char answer[MAX_CARD_ANSWER_LENGTH+2];
+    /*Loops until exit entered*/
     while(1){
         print_edit_deck(deck, pos);
         while((getchar()) != '\n');
@@ -293,6 +337,13 @@ void edit_deck(deck_t deck, user_t user, int pos){
     }
 }
 
+/*******************************************************************************
+ * Deletes a deck a user chooses
+ * inputs:
+ * - deck_t, user_t
+ * outputs:
+ * - None
+*******************************************************************************/
 void delete_deck(deck_t deck, user_t user){
     delete_deck_db(deck, deck->name, user);
     global_decks = load_user_decks(user);
@@ -302,7 +353,7 @@ void delete_deck(deck_t deck, user_t user){
 /*******************************************************************************
  * Creates a deck for a user and stores it into the database
  * inputs:
- * - deck_t, deck_t, user
+ * - user_t
  * outputs:
  * - None
 *******************************************************************************/
@@ -314,6 +365,7 @@ void create_a_deck(user_t user){
     char user_input[MAX_INPUT_LENGTH+2];
     int is_public = 0;
     int loop = 1;
+    /*loop until valid deck name entered*/
     while(loop){
         strcpy(name, "");
         clear_screen();
@@ -332,7 +384,8 @@ void create_a_deck(user_t user){
         }
         else if(check_deck_exists(name)){
             clear_screen();
-            print_yellow("This deck already exists, please choose a new name.\n", 0);
+            print_yellow("This deck already exists, ", 0);
+            print_yellow("please choose a new name.\n", 0);
             neutral_wait_pre();
         }
         else{
@@ -343,6 +396,7 @@ void create_a_deck(user_t user){
 
     loop = 1;
     int question_or_answer = 0;
+    /*loop until valid question and answer answered*/
     while(loop){
         clear_screen();
         if(!question_or_answer){
@@ -401,6 +455,7 @@ void create_a_deck(user_t user){
         }
     }
 
+    /*loops until a valid option entered*/
     while(is_public == 0){
         printf("Do you want make this deck public or private? "
                "Type 1 for public or 0 for private.\n");
@@ -415,9 +470,10 @@ void create_a_deck(user_t user){
         }
     }
     
+    /*if deck is to be public, add to community decks db and linked list*/
     if(is_public == 1){
-        global_community_decks = add_deck(global_community_decks, name, user.fullname,
-             "", is_public, 0, 0, cards);
+        global_community_decks = add_deck(global_community_decks, name, 
+        user.fullname, "", is_public, 0, 0, cards);
         save_community_decks(global_community_decks);
     }
 
@@ -431,7 +487,7 @@ void create_a_deck(user_t user){
  * Views all the community decks and allows
  * users to add them to their collction.
  * inputs:
- * - deck_t, deck_t, user_t
+ * - user_t
  * outputs:
  * - None
 *******************************************************************************/
@@ -442,6 +498,7 @@ void view_community_decks(user_t user){
         deck_t temp = global_community_decks;
         char input[MAX_INPUT_LENGTH];
         int i;
+        /*Display each public deck in the community*/
         print_community_decks(global_community_decks);
         while((getchar()) != '\n');
         scanf("%[^\n]", input);
@@ -468,7 +525,7 @@ void view_community_decks(user_t user){
  * Views a single community deck and it's corresponding cards
  * either with or without answers
  * inputs:
- * - deck_t, deck_t, user_t
+ * - deck_t, user_t
  * outputs:
  * - None
 *******************************************************************************/
@@ -502,7 +559,7 @@ void view_community_deck(deck_t deck, user_t user){
 /*******************************************************************************
  * Menu's to let a user login. returns an int if it was successful or not
  * inputs:
- * - deck_t, deck_t, user_t*
+ * - user_t*
  * outputs:
  * - int
 *******************************************************************************/
@@ -534,9 +591,9 @@ int login(user_t *user) {
 /*******************************************************************************
  * Menu's to login with an existing account
  * inputs:
- * - deck_t, deck_t, user_t*
+ * - user_t*
  * outputs:
- * - None
+ * - int
 *******************************************************************************/
 int login_existing_account(user_t *user){
     print_existing_account(user);
@@ -562,9 +619,9 @@ int login_existing_account(user_t *user){
 /*******************************************************************************
  * Menu's create a new account
  * inputs:
- * - deck_t, deck_t, user_t*
+ * - user_t*
  * outputs:
- * - None
+ * - int
 *******************************************************************************/
 int create_new_account(user_t *user){
     char input_fullname[MAX_NAME_LENGTH+2] = "";
@@ -634,6 +691,14 @@ int create_new_account(user_t *user){
     return 1;
 }
 
+/*******************************************************************************
+ * Checks username format
+ * Makes sure each character is alphanumeric
+ * inputs:
+ * - string (username)
+ * outputs:
+ * - int
+*******************************************************************************/
 int check_username_format(const char username[]){
     user_t temp;
     strcpy(temp.username, username);
@@ -669,6 +734,18 @@ int check_username_format(const char username[]){
     return 1;
 }
 
+/*******************************************************************************
+ * Checks password format
+ * Makes sure each character is alphanumeric,
+ * and that there is atleast one one;
+ * Uppercase Letter
+ * Lowercase Letter
+ * Number
+ * inputs:
+ * - string (password)
+ * outputs:
+ * - int
+*******************************************************************************/
 int check_password_format(const char password[]){
     int cont_lowercase = 0;
     int cont_uppercase = 0;

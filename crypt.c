@@ -1,20 +1,42 @@
 #include "crypt.h"
 
+/*******************************************************************************
+ * XOR Encryption
+ * inputs:
+ * - string
+ * outputs:
+ * - None
+*******************************************************************************/
 void encrypt(char string[]){
     int i;
     for(i = 0; i < strlen(string); i++){
-        string[i] = string[i]^KEY_Pos;
+        string[i] = string[i]^KEY;
         
     }
 }
 
+/*******************************************************************************
+ * XOR Decryption
+ * inputs:
+ * - string
+ * outputs:
+ * - None
+*******************************************************************************/
 void decrypt(char string[]){
     int i;
     for(i = 0; i < strlen(string); i++){
-        string[i] = string[i]^KEY_Pos;
+        string[i] = string[i]^KEY;
     }
 }
 
+/*******************************************************************************
+ * Run-Time Compression
+ * e.g. aaa -> a3
+ * inputs:
+ * - string
+ * outputs:
+ * - char*
+*******************************************************************************/
 char*compress(char*string){
     int str_len = strlen(string);
     char*final = (char*)malloc(sizeof(char) * ((str_len*2)+1));
@@ -40,6 +62,14 @@ char*compress(char*string){
     return final;
 }
 
+/*******************************************************************************
+ * Run-Time Decompression
+ * e.g. a3 -> aaa
+ * inputs:
+ * - string, int
+ * outputs:
+ * - char*
+*******************************************************************************/
 char*decompress(char*string, int max){
     int str_len = strlen(string);
     char*final = (char*)malloc(sizeof(char) * ((max)+1));

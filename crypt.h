@@ -3,8 +3,7 @@
 
 #include "cards.h"
 
-#define KEY_Pos 0xB6
-#define KEY_Neg 0xC9
+#define KEY 0xB6
 #define MAX_INT_LENGTH 11
 #define MAX_KEY_LENGTH 100
 
@@ -16,7 +15,5 @@ void encrypt(char[]);
 void decrypt(char[]);
 char*compress(char*);
 char*decompress(char*, int);
-
-
 
 #endif
