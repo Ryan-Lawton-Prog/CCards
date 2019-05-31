@@ -3,7 +3,7 @@
  * Team: 3
  * Team Members: 
  *  Anto Mathews - 
- *  Ayush Bhatia - 
+ *  Ayush Bhatia - 12604486
  *  Gordon Wang - 
  *  Jenny Tran - 
  *  Ryan Lawton - 12545341
@@ -13,11 +13,9 @@
 #include "deck.h"
 #include "print.h"
 #include "user.h"
-#include "test.h"
 
 deck_t global_decks;
 deck_t global_community_decks;
-int debug;
 
 /*******************************************************************************
  * Function prototypes
@@ -46,20 +44,14 @@ int check_cmla(user_t*, int, char*[]);
 int main(int argc, char *argv[]){
     int menu = 0;
     int logged_in = 0;
-    debug = 0;
     global_decks = create_deck();
     global_community_decks = load_community_decks();
     user_t user = create_user();
     int command = check_cmla(&user, argc, argv);
     if(command == 1){
-        debug = 1;
-    }else if(command == 2){
         logged_in = 1;
     }
     while(menu != -1){
-        if(debug){
-            logged_in = 1;
-        }
         if(logged_in){
             print_menu();
             scanf("%d",&menu);
@@ -82,7 +74,9 @@ int main(int argc, char *argv[]){
                     view_community_decks(user);
                     break;
                 default:
+                    clear_screen();
                     print_red("Invalid choice\n", 1);
+                    wait();
                     break;
             }
         }else{
@@ -101,28 +95,22 @@ int main(int argc, char *argv[]){
 *******************************************************************************/
 int check_cmla(user_t*user, int argc, char *argv[]){
     /*are their any arguments to begin with?*/
-    if(argc > 1){
-        if(!strcmp(argv[1], "debug")){
-            return 1;
-        }else if(!strcmp(argv[1], "login")){
-            if(argc > 3){
-                strcpy(user->username,argv[2]);
-                strcpy(user->password,argv[3]);
-                /*checks if login credentials are correct or not*/
-                if (check_password(user) == 0) {
-                    clear_screen();
-                    print_red("Invalid credentials!\n", 1);
-                    neutral_wait();
-                }
-                else {
-                    global_decks = load_user_decks(*user);
-                    /*clear_screen();*/
-                    print_green("Log-in successful.\n", 1);
-                    neutral_wait();
-                    return 1;
-                }
-                return 0;
-                return 2;
+    if(argc > 3){
+        if(!strcmp(argv[1], "login")){
+            strcpy(user->username,argv[2]);
+            strcpy(user->password,argv[3]);
+            /*checks if login credentials are correct or not*/
+            if (check_password(user) == 0) {
+                clear_screen();
+                print_red("Invalid credentials!\n", 1);
+                neutral_wait();
+            }
+            else {
+                global_decks = load_user_decks(*user);
+                /*clear_screen();*/
+                print_green("Log-in successful.\n", 1);
+                neutral_wait();
+                return 1;
             }
         }
     }
@@ -140,7 +128,7 @@ void view_decks(user_t user){
     /*continue loop until break is hit*/
     while(1){
         deck_t temp = global_decks;
-        char input[100];
+        char input[MAX_INPUT_LENGTH];
         int i; 
         /*print menu*/
         print_user_decks(global_decks);
@@ -164,6 +152,9 @@ void view_decks(user_t user){
                     return; 
                 }
             }
+            clear_screen();
+            print_red("Invalid deck\n", 1);
+            neutral_wait_pre();
         }
     }
 }
@@ -202,7 +193,9 @@ void deck_menu(deck_t deck, user_t user){
                 menu = -1;
                 break; 
             default:
-                printf("Invalid choice\n");
+                clear_screen();
+                print_red("Invalid choice\n", 1);
+                wait();
                 break; 
         }
     }
@@ -253,11 +246,13 @@ void view_deck(deck_t deck, user_t user){
                 break;
             default:
                 /*based on number chooses selected card*/
-                if(menu > 0 && menu <= get_deck_size(deck)){
+                if(menu > 0 && menu <= get_size(deck->cards)){
                     edit_deck(deck, user, menu);
                     break;
                 }
-                print_red("Invalid choice\n", 1);
+                clear_screen();
+                print_red("Invalid card\n", 1);
+                wait();
                 break;
         }
     }
@@ -540,8 +535,12 @@ void view_community_deck(deck_t deck, user_t user){
                 menu = -1;
                 break;
             case 1:
-                global_decks = add_deck(global_decks, deck->name, deck->author,
-                    user.username, 0, 0, 0, deck->cards);
+                global_decks = add_deck(global_decks, 
+                    deck->name, 
+                    deck->author,
+                    user.username, 
+                    0, 0, 0, 
+                    deck->cards);
                 update_deck_db(get_last_deck(global_decks));
                 print_add_deck();
                 menu = -1;
@@ -672,7 +671,8 @@ int create_new_account(user_t *user){
         strcpy(input_password, "");
         clear_screen();
         print_yellow("Password (maximum of 20 alphanumeric characters)\n", 0);
-        print_yellow("Requires atleast one Number, Capital and lowercase letter\n> ", 0);
+        print_yellow("Requires atleast one Number, ", 0);
+        print_yellow("Capital and lowercase letter\n> ", 0);
         scanf("%[^\n]", input_password);
         if (check_password_format(input_password)) {
             input_password[-1] = '\0';
@@ -726,7 +726,8 @@ int check_username_format(const char username[]){
             (username[i] >= '0' && username[i] <= '9')){
         }else{
             clear_screen();
-            print_yellow("You can only use alphanumeric characters in your username.\n", 0);
+            print_yellow("You can only use alphanumeric characters", 0);
+            print_yellow(" in your username.\n", 0);
             wait();
             return 0;
         }
@@ -772,7 +773,8 @@ int check_password_format(const char password[]){
             cont_number = 1;
         }else{
             clear_screen();
-            print_yellow("You can only use alphanumeric characters in your password.\n", 0);
+            print_yellow("You can only use alphanumeric characters", 0);
+            print_yellow(" in your password.\n", 0);
             wait();
             return 0;
         }
@@ -781,7 +783,8 @@ int check_password_format(const char password[]){
         return 1;
     }
     clear_screen();
-    print_yellow("Your password needs a lowercase character, an uppercase character and a number.\n", 0);
+    print_yellow("Your password needs a lowercase character,\n", 0);
+    print_yellow(" an uppercase character and a number.\n", 0);
     wait();
     return 0;
 }

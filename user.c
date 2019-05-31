@@ -44,7 +44,7 @@ void get_fullname(user_t user, char fullname[]){
 /*******************************************************************************
  * Checks a submitted users username and checks to see if it exists
  * inputs:
- * - user
+ * - user_t
  * outputs:
  * - none
 *******************************************************************************/
@@ -65,6 +65,7 @@ int check_username(user_t user){
         if(!eof){
             break;
         }
+        /*If username found, return that we found an existing user*/
         if(!strcmp(temp_l, "username")){
             if(!strcmp(temp_r, user.username)){
                 fclose(filep);
@@ -77,11 +78,11 @@ int check_username(user_t user){
 }
 
 /*******************************************************************************
- * Checks a submitted users password and checks to see if it exists
+ * Checks if the password is correct for a given user
  * inputs:
- * - user
+ * - user_t*
  * outputs:
- * - none
+ * - int
 *******************************************************************************/
 int check_password(user_t*user){
     FILE * filep;
@@ -100,16 +101,19 @@ int check_password(user_t*user){
         }
         decrypt(temp_r);
         strcpy(temp_r, decompress(temp_r, MAX_USERNAME_LENGTH));
+        /*Verifying that the password we are checking is for right user*/
         if(!strcmp(temp_l, "username") && !strcmp(temp_r, user->username)){
             eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
             decrypt(temp_r);
             strcpy(temp_r, decompress(temp_r, MAX_PASSWORD_LENGTH));
+            /*Checking the users password*/
             if(!strcmp(temp_l, "password") && !strcmp(temp_r, user->password)){
                 eof = fscanf(filep, "%s %[^\n]", temp_l, temp_r) != EOF;
                 decrypt(temp_r);
                 strcpy(temp_r, decompress(temp_r, MAX_NAME_LENGTH));
                 strcpy(user->fullname, temp_r);
                 fclose(filep);
+                /*Return that password is correct for user*/
                 return 1;
             }
         }
@@ -145,7 +149,7 @@ user_t set_username(user_t user, const char username[]){
 /*******************************************************************************
  * Sets the password of a user
  * inputs:
- * - user_t, string (username)
+ * - user_t, string (password)
  * outputs:
  * - user_t
 *******************************************************************************/
@@ -163,6 +167,7 @@ user_t set_password(user_t user, const char password[]){
 *******************************************************************************/
 void update_user_db(user_t user){
     FILE * filep;
+    /*append new user to end of db*/
     filep = fopen(DB_USERS, "a");
     if(filep == NULL){
         printf("Could not find Users DB\n");

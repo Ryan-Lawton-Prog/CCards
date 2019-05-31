@@ -35,7 +35,6 @@ typedef struct deck * deck_t;
 deck_t create_deck();
 deck_t add_deck(deck_t, const char[], const char[], 
     const char[], int, int, double, card_t);
-deck_t insert_deck(deck_t);
 void get_name(deck_t, char[]);
 void get_name_at(deck_t, int, char[]);
 card_t get_cards(deck_t);

@@ -198,6 +198,13 @@ void print_community_cards(deck_t deck, int show_answer){
     printf("Show question answers\n> ");
 }
 
+/*******************************************************************************
+ * Prints out a single decks details
+ * inputs:
+ * - deck_t
+ * outputs:
+ * - None
+*******************************************************************************/
 void print_user_deck(deck_t deck){
     print_yellow("Title: ",0);
     printf("%s\n", deck->name);
@@ -209,6 +216,13 @@ void print_user_deck(deck_t deck){
     printf("%f\n\n", deck->accuracy);
 }
 
+/*******************************************************************************
+ * Prints out all decks
+ * inputs:
+ * - deck_t
+ * outputs:
+ * - None
+*******************************************************************************/
 void print_user_decks(deck_t decks){
     clear_screen();
     deck_t temp = decks;
@@ -231,6 +245,13 @@ void print_user_decks(deck_t decks){
     }
 }
 
+/*******************************************************************************
+ * Prints out a single card details
+ * inputs:
+ * - card_t
+ * outputs:
+ * - None
+*******************************************************************************/
 void print_user_card(card_t card){
     print_yellow("Question: ",0);
     printf("%s\n", card->question);
@@ -239,6 +260,13 @@ void print_user_card(card_t card){
     printf("\n");
 }
 
+/*******************************************************************************
+ * Prints out all cards of a deck
+ * inputs:
+ * - deck_t
+ * outputs:
+ * - None
+*******************************************************************************/
 void print_user_cards(deck_t deck){
     clear_screen();
     card_t temp = deck->cards;
@@ -262,6 +290,13 @@ void print_user_cards(deck_t deck){
     printf("Edit a question\n> ");
 }
 
+/*******************************************************************************
+ * Prints out the options you can choose for a single deck
+ * inputs:
+ * - deck_t
+ * outputs:
+ * - None
+*******************************************************************************/
 void print_deck_menu(deck_t deck){
     clear_screen();
 
@@ -285,12 +320,26 @@ void print_deck_menu(deck_t deck){
     printf("Delete this deck\n> ");
 }
 
+/*******************************************************************************
+ * Prints out the question of a card
+ * inputs:
+ * - card_t
+ * outputs:
+ * - None
+*******************************************************************************/
 void print_card_question(card_t card){
     clear_screen();
     print_yellow("Question: ",0);
     printf("%s\n> ", card->question);
 }
 
+/*******************************************************************************
+ * Prints out if the answer provided is the same one as on the card
+ * inputs:
+ * - deck_t, string(answer)
+ * outputs:
+ * - None
+*******************************************************************************/
 int print_card_answer(card_t card, const char answer[]){
     if(!strcmp(answer, card->answer)){
         print_green("CORRECT!!!\n", 1);
@@ -306,6 +355,13 @@ int print_card_answer(card_t card, const char answer[]){
     }
 }
 
+/*******************************************************************************
+ * Prints out the results of the current game play session
+ * inputs:
+ * - deck_t, int, user_t
+ * outputs:
+ * - None
+*******************************************************************************/
 void print_correct(deck_t deck, int correct, user_t user){
     clear_screen();
     char string[MAX_NAME_LENGTH];
@@ -433,7 +489,7 @@ void print_add_deck(){
 /*******************************************************************************
  * Prints and recieves the details for loging in for a user
  * inputs:
- * - None
+ * - user_t*
  * outputs:
  * - None
 *******************************************************************************/
@@ -448,6 +504,13 @@ void print_existing_account(user_t*user){
     scanf("%[^\n]", user->password);
 }
 
+/*******************************************************************************
+ * Prints out the menu to edit a card in a deck
+ * inputs:
+ * - deck_t, pos
+ * outputs:
+ * - None
+*******************************************************************************/
 void print_edit_deck(deck_t deck, int pos){
     clear_screen();
     print_user_card(get_card_at(deck->cards, pos-1));
@@ -461,6 +524,13 @@ void print_edit_deck(deck_t deck, int pos){
     printf("> ");
 }
 
+/*******************************************************************************
+ * Prints out that a deck has been successfully deleted
+ * inputs:
+ * - None
+ * outputs:
+ * - None
+*******************************************************************************/
 void print_delete_deck(){
     clear_screen();
     print_green("Deck successfully deleted!\n", 1);
