@@ -69,6 +69,23 @@ void print_blue(const char text[], int bold){
 }
 
 /*******************************************************************************
+ * Used to print to terminal in blue, either normally or bold
+ * inputs:
+ * - string (text), int
+ * outputs:
+ * - None
+*******************************************************************************/
+void print_cyan(const char text[], int bold){
+    if(bold == 1){
+        printf("\033[1;36m");
+    }else{
+        printf("\033[0;36m");
+    }
+    printf("%s", text);
+    printf("\033[0m");
+}
+
+/*******************************************************************************
  * Used to clear the terminal screen (refresh)
  * inputs:
  * - None
@@ -88,6 +105,7 @@ void clear_screen(){
 *******************************************************************************/
 void print_menu(){
     clear_screen();
+    debug_string("DEBUG ON\n");
     print_green("MAIN MENU\n-----------\n\n", 1);
     print_yellow("Would you like to:\n", 1);
     print_yellow("0: ", 0);
@@ -109,12 +127,13 @@ void print_menu(){
 *******************************************************************************/
 void print_login_menu() {
     clear_screen();
-	print_green("LOG-IN MENU\n-----------\n\n", 1);
-	print_yellow("Enter an option from the list below:\n", 1);
+    debug_string("DEBUG ON\n");
+    print_green("LOG-IN MENU\n-----------\n\n", 1);
+    print_yellow("Enter an option from the list below:\n", 1);
     print_yellow("1: ", 0);
-	printf("Log in with an existing account.\n");
+    printf("Log in with an existing account.\n");
     print_yellow("2: ", 0);
-	printf("Create a new account.\n> ");
+    printf("Create a new account.\n> ");
 }
 
 /*******************************************************************************
@@ -139,6 +158,9 @@ void print_community_deck(deck_t deck){
  * - None
 *******************************************************************************/
 void print_community_decks(deck_t decks){
+    debug_string("DECK SIZE: ");
+    debug_int(get_deck_size(decks));
+    debug_string("\n");
     deck_t temp = decks;
     int i;
     for(i = 0; i < get_deck_size(decks); i++){
@@ -180,6 +202,9 @@ void print_community_card(card_t card, int show_answer){
 *******************************************************************************/
 void print_community_cards(deck_t deck, int show_answer){
     clear_screen();
+    debug_string("CARD SIZE: ");
+    debug_int(get_size(deck->cards));
+    debug_string("\n");
     card_t temp = deck->cards;
     int i;
     print_community_deck(deck);
@@ -206,6 +231,9 @@ void print_community_cards(deck_t deck, int show_answer){
  * - None
 *******************************************************************************/
 void print_user_deck(deck_t deck){
+    debug_string("CARD SIZE: ");
+    debug_int(get_size(deck->cards));
+    debug_string("\n");
     print_yellow("Title: ",0);
     printf("%s\n", deck->name);
     print_yellow("Author: ",0);
@@ -225,6 +253,9 @@ void print_user_deck(deck_t deck){
 *******************************************************************************/
 void print_user_decks(deck_t decks){
     clear_screen();
+    debug_string("DECK SIZE: ");
+    debug_int(get_deck_size(decks));
+    debug_string("\n");
     deck_t temp = decks;
     int i;
     if(strlen(decks->name) > 0){
@@ -269,6 +300,9 @@ void print_user_card(card_t card){
 *******************************************************************************/
 void print_user_cards(deck_t deck){
     clear_screen();
+    debug_string("CARD SIZE: ");
+    debug_int(get_size(deck->cards));
+    debug_string("\n");
     card_t temp = deck->cards;
     int i;
     char string[MAX_NAME_LENGTH];
@@ -535,4 +569,32 @@ void print_delete_deck(){
     clear_screen();
     print_green("Deck successfully deleted!\n", 1);
     wait();
+}
+
+/*******************************************************************************
+ * Debug text for strings, only prints if in debug mode
+ * inputs:
+ * - string
+ * outputs:
+ * - None
+*******************************************************************************/
+void debug_string(const char string[]){
+    if(debug){
+        print_cyan(string, 0);
+    }
+}
+
+/*******************************************************************************
+ * Debug text for integers, only prints if in debug mode
+ * inputs:
+ * - int
+ * outputs:
+ * - None
+*******************************************************************************/
+void debug_int(int num){
+    if(debug){
+        char string[MAX_INPUT_LENGTH];
+        sprintf(string, "%d", num);
+        print_cyan(string, 0);
+    }
 }

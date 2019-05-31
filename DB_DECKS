@@ -13,15 +13,6 @@ answer 30
 question 6/3
 answer 2
 end deck
-name Test
-author Ryan Lawton
-owner Lawyer
-is_public 0
-played 1
-accuracy 1.000000
-question Is this a test?
-answer yes
-end deck
 name C programming
 author Ryan Alexander Lawton
 owner Lawyer

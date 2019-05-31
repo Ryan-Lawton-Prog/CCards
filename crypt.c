@@ -11,7 +11,6 @@ void encrypt(char string[]){
     int i;
     for(i = 0; i < strlen(string); i++){
         string[i] = string[i]^KEY;
-        
     }
 }
 

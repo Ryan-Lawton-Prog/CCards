@@ -4,6 +4,8 @@
 #include "deck.h"
 #include "user.h"
 
+int debug;
+
 /*******************************************************************************
  * Function prototypes
 *******************************************************************************/
@@ -11,6 +13,7 @@ void print_red(const char[], int);
 void print_green(const char[], int);
 void print_yellow(const char[], int);
 void print_blue(const char[], int);
+void print_cyan(const char[], int);
 void clear_screen();
 void print_menu();
 void print_login_menu();
@@ -36,5 +39,7 @@ int print_card_answer(card_t, const char[]);
 void print_correct(deck_t, int, user_t);
 void print_edit_deck(deck_t, int);
 void print_delete_deck();
+void debug_string(const char[]);
+void debug_int(int);
 
 #endif

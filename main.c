@@ -4,8 +4,8 @@
  * Team Members: 
  *  Anto Mathews - 13205479
  *  Ayush Bhatia - 12604486
- *  Gordon Wang - 
- *  Jenny Tran - 
+ *  Gordon Wang - 13225964
+ *  Jenny Tran - 13244571
  *  Ryan Lawton - 12545341
  * Date of submission: 28/5/2019
 *******************************************************************************/
@@ -44,12 +44,16 @@ int check_cmla(user_t*, int, char*[]);
 int main(int argc, char *argv[]){
     int menu = 0;
     int logged_in = 0;
+    debug = 0;
     global_decks = create_deck();
     global_community_decks = load_community_decks();
     user_t user = create_user();
     int command = check_cmla(&user, argc, argv);
     if(command == 1){
         logged_in = 1;
+    }
+    if(command == 2){
+        debug = 1;
     }
     while(menu != -1){
         if(logged_in){
@@ -95,22 +99,28 @@ int main(int argc, char *argv[]){
 *******************************************************************************/
 int check_cmla(user_t*user, int argc, char *argv[]){
     /*are their any arguments to begin with?*/
-    if(argc > 3){
-        if(!strcmp(argv[1], "login")){
-            strcpy(user->username,argv[2]);
-            strcpy(user->password,argv[3]);
-            /*checks if login credentials are correct or not*/
-            if (check_password(user) == 0) {
-                clear_screen();
-                print_red("Invalid credentials!\n", 1);
-                neutral_wait();
-            }
-            else {
-                global_decks = load_user_decks(*user);
-                /*clear_screen();*/
-                print_green("Log-in successful.\n", 1);
-                neutral_wait();
-                return 1;
+    if(argc > 1){
+
+        if(!strcmp(argv[1], "debug")){
+            return 2;
+        }else if(!strcmp(argv[1], "login")){
+            if(argc > 3){
+                strcpy(user->username,argv[2]);
+                strcpy(user->password,argv[3]);
+                /*checks if login credentials are correct or not*/
+                if (check_password(user) == 0) {
+                    clear_screen();
+                    print_red("Invalid credentials!\n", 1);
+                    neutral_wait();
+                    return 0;
+                }
+                else {
+                    global_decks = load_user_decks(*user);
+                    /*clear_screen();*/
+                    print_green("Log-in successful.\n", 1);
+                    neutral_wait();
+                    return 1;
+                }
             }
         }
     }
@@ -512,7 +522,9 @@ void view_community_decks(user_t user){
                 }
             }
         }
-        print_invalid_deck();
+        clear_screen();
+        print_red("Invalid choice\n", 1);
+        neutral_wait_pre();
     }
 }
 
