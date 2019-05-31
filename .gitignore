@@ -4,5 +4,4 @@
 .vscode/launch.json
 .vscode/*
 main
-backup
-.backupfolder/*
+.backup/*
