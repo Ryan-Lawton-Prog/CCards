@@ -2,21 +2,10 @@ name Math
 author Ryan Lawton
 question 1+1
 answer 2
-question 2+2
-answer 4
-question 5*6
-answer 30
-question 6/3
+question 4/2
 answer 2
-end deck
-name C programming
-author Ryan Alexander Lawton
-question What type of if statement uses integers
-answer switch
-question Is this a valid statement? "string c;"
-answer no
-question Is this program made in C?
-answer yes
-question How do you write something to the console?
-answer printf
+question 4*5
+answer 20
+question 20-5
+answer 15
 end deck
